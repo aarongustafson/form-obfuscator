@@ -40,27 +40,13 @@
 				font-weight: normal;
 				margin-block: .5rem 1rem;
 			}
-			form-required-if:has([required]) label {
-				outline: 3px solid red;
-				outline-offset: 7px;
-			}
-			.other-radio,
-			.other-checkbox {
-				display: flex;
-				margin-block: .25rem;
-				min-height: 23px;
-			}
-			.other-radio label,
-			.other-checkbox label {
-				font-weight: normal;
-				margin-block: 0;
-				margin-inline-end: .5rem;
-			}
-			form-required-if:defined label.dependent {
-				display: none;
-			}
-			form-required-if:defined label.dependent:has([required]) {
+
+			overflow {
+				max-block-size: 14rem;
+				overflow-y: scroll;
+				background: #ccc;
 				display: block;
+				border: .5rem solid #ccc;
 			}
 		</style>
 	</head>
