@@ -63,7 +63,8 @@ export class FormObfuscatorElement extends HTMLElement {
 	__emitEvent( type, $field ) {
 		const event = new CustomEvent(`form-obfuscator:${type}`, {
 			detail: {
-				field: $field
+				field: $field,
+        hidden: $field.$clone
 			}
 		});
 		this.dispatchEvent( event );

@@ -120,7 +120,7 @@
 			var $form = document.querySelector("form");
 			var $output = document.querySelector("output");
 			function logEvent( event ) {
-				$output.innerText += `${event.type} event for ${event.detail.field}\r\n`;
+				$output.innerText += `${event.type} event for ${event.detail.field} with hidden ${event.detail.hidden}\r\n`;
 			}
 			$form.addEventListener("form-obfuscator:hide", logEvent, true);
 			$form.addEventListener("form-obfuscator:reveal", logEvent, true);

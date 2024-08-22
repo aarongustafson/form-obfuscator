@@ -15,7 +15,7 @@ This element will emit two custom JavaScript events:
 * `form-obfuscator:hide` when a field is obfuscated
 * `form-obfuscator:reveal` when a field is obfuscated
 
-On either event you can access the obfuscated field through the reference `event.detail.field`.
+On either event you can access the obfuscated field through the reference `event.detail.field` and the hidden field through the reference `event.detail.hidden`.
 
 ## Markup Assumptions
 
