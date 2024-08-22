@@ -1,0 +1,143 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Required Checkboxes Web Component Demo</title>
+		<style>
+			body {
+				margin: 1rem;
+			}
+			legend,
+			label {
+				font-weight: bold;
+				display: block;
+				margin-block: 1rem;
+			}
+			label:has(+ input) {
+				margin-block-end: 0;
+			}
+			fieldset {
+				margin-block: 1rem;
+				border: 0;
+				padding: 0;
+			}
+			legend {
+				margin-block: 0;
+			}
+			fieldset > label {
+				font-weight: normal;
+				margin-block: .25rem;
+				min-height: 23px;
+			}
+			input:not([type=checkbox],[type=radio],[type=submit],[type=reset]),
+			select,
+			textarea {
+				display: block;
+			}
+			small {
+				display: block;
+				font-style: italic;
+				font-weight: normal;
+				margin-block: .5rem 1rem;
+			}
+			form-required-if:has([required]) label {
+				outline: 3px solid red;
+				outline-offset: 7px;
+			}
+			.other-radio,
+			.other-checkbox {
+				display: flex;
+				margin-block: .25rem;
+				min-height: 23px;
+			}
+			.other-radio label,
+			.other-checkbox label {
+				font-weight: normal;
+				margin-block: 0;
+				margin-inline-end: .5rem;
+			}
+			form-required-if:defined label.dependent {
+				display: none;
+			}
+			form-required-if:defined label.dependent:has([required]) {
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<form action="#">
+
+			<form-obfuscator>
+				<label for="field-1">Example 1</label>
+				<input id="field-1" name="field-1" value="test">
+				<small>Default behavior: full value will be obfuscated with asterisks (*)</small>
+			</form-obfuscator>
+
+			<h2>Character Replacements</h2>
+
+			<form-obfuscator character="•">
+				<label for="field-2">Example 2</label>
+				<input id="field-2" name="field-2" value="test">
+				<small>Character: full value will be obfuscated with •</small>
+			</form-obfuscator>
+
+			<form-obfuscator character="✖︎">
+				<label for="field-3">Example 3</label>
+				<input id="field-3" name="field-3" value="test">
+				<small>Character: full value will be obfuscated with ✖︎</small>
+			</form-obfuscator>
+
+			<h2>Maxlength</h2>
+
+			<form-obfuscator maxlength="1">
+				<label for="field-4">Example 4</label>
+				<input id="field-4" name="field-4" value="test">
+				<small>Maxlength: the value will be obfuscated and truncated to a single character</small>
+			</form-obfuscator>
+
+			<h2>Patterns</h2>
+
+			<form-obfuscator pattern="\d{4}$">
+				<label for="field-5">Example 5</label>
+				<input id="field-5" name="field-5" value="1234567890123456">
+				<small>Pattern: the value will be obfuscated withn the sxception of the last 4 digits</small>
+			</form-obfuscator>
+
+			<form-obfuscator pattern="est$">
+				<label for="field-6">Example 6</label>
+				<input id="field-6" name="field-6" value="1234567890123456">
+				<small>Pattern: the whole value will be hidden as the pattern is not matched</small>
+			</form-obfuscator>
+
+			<h2>Combinations</h2>
+
+			<form-obfuscator pattern="\d{4}$" maxlength="6">
+				<label for="field-7">Example 7</label>
+				<input id="field-7" name="field-7" value="1234567890123456">
+				<small>Maxlength + pattern: pattern will be ignored and the value will be truncated to 6 characters</small>
+			</form-obfuscator>
+
+			<form-obfuscator pattern="\d{4}$" character="~">
+				<label for="field-8">Example 8</label>
+				<input id="field-8" name="field-8" value="1234567890123456">
+				<small>Character + pattern: all but match will be obfuscated with ~</small>
+			</form-obfuscator>
+
+			<button type="submit">Submit</button>
+		</form>
+
+		<h2>Event Logging</h2>
+		<output></output>
+		<script>
+			var $form = document.querySelector("form");
+			var $output = document.querySelector("output");
+			function logEvent( event ) {
+				$output.innerText += `${event.type} event for ${event.detail.field}\r\n`;
+			}
+			$form.addEventListener("form-obfuscator:hide", logEvent, true);
+			$form.addEventListener("form-obfuscator:reveal", logEvent, true);
+		</script>
+
+		<script src="form-obfuscator.js" async></script>
+	</body>
+</html>

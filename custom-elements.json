@@ -1,0 +1,62 @@
+{
+	"schemaVersion": "2.1.0",
+	"readme": "README.md",
+	"modules": [
+		{
+			"kind": "javascript-module",
+			"path": "form-obfuscator.js",
+			"declarations": [
+				{
+					"kind": "class",
+					"customElement": true,
+					"name": "FormObfuscatorElement",
+					"tagName": "form-obfuscator",
+					"description": "Web component that obfuscates fields when they don’t have focus.",
+					"members": [],
+					"attributes": [
+						{
+							"name": "character",
+							"description": "String for the replacement character.",
+							"type": {
+								"text": "string"
+							}
+						},
+						{
+							"name": "pattern",
+							"description": "An optional attribute for matching the bit of the string you want to keep visible.",
+							"type": {
+								"text": "string"
+							}
+						},
+						{
+							"name": "maxlength",
+							"description": "Optional attribute for truncating the obfuscated value.",
+							"type": {
+								"text": "number"
+							}
+						}
+					],
+					"superclass": {
+						"name": "HTMLElement"
+					}
+				}
+			],
+			"exports": [
+				{
+					"kind": "js",
+					"name": "FormObfuscatorElement",
+					"declaration": {
+						"name": "FormObfuscatorElement"
+					}
+				},
+				{
+					"kind": "custom-element-definition",
+					"name": "form-obfuscator",
+					"declaration": {
+						"name": "FormObfuscatorElement"
+					}
+				}
+			]
+		}
+	]
+}

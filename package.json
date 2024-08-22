@@ -1,0 +1,32 @@
+{
+	"name": "@aarongustafson/form-obfuscator",
+	"version": "1.0.0",
+	"description": "Web component that obfuscates fields when they don’t have focus.",
+	"main": "form-obfuscator.js",
+	"module": "form-obfuscator.module.js",
+	"customElements": "custom-elements.json",
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/aarongustafson/form-obfuscator.git"
+	},
+	"author": "Aaron Gustafson <aaron@easy-designs.net> (https://www.aaron-gustafson.com/)",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/aarongustafson/form-obfuscator/issues"
+	},
+	"homepage": "https://github.com/aarongustafson/form-obfuscator#readme",
+	"devDependencies": {
+		"prettier": "^3.3.2"
+	},
+	"keywords": [
+		"html",
+		"custom element",
+		"forms"
+	]
+}
