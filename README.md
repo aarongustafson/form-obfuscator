@@ -5,8 +5,9 @@ There is no standard way to have a field’s contents be readable while editing 
 ## API
 
 * `character` - The text character to replace each obfuscated character with. Default: *
-* `pattern` - Regular expression to manage replacement. Matched characters will be kept, all other characters will be replaced. If no match is found, the whole string will be replaced.
-* `maxlength` - The maximum number of characters to display when obfuscating the text. **Will cause `pattern` to be ignored.**
+* `pattern` (optional) - Regular expression to manage replacement. Matched characters will be kept, all other characters will be replaced. If no match is found, the whole string will be replaced.
+* `replacer` (optional) - A custom replacement function that will be used to replace the value. Requires `pattern` be set as well. The obfuscated value will be a result of `value.replace( pattern, replacer )` where _value_ is the original field value, _pattern_ is a Regular Expression conversion of `pattern`, and _replacer_ is this function. All components of the replacer will need to be addressed via `arguments`.
+* `maxlength` (optional) - The maximum number of characters to display when obfuscating the text. This truncation is applied at the end of the replacement process.
 
 ## Events
 
@@ -29,7 +30,7 @@ All field values will be duplicated into a hidden field, which is the field that
 
 ```html
 <form-obfuscator>
-  <label for="my-field">Required if there’s an email value</label>
+  <label for="my-field">Field Label</label>
   <input id="my-field" name="foo">
 </form-obfuscator>
 ```

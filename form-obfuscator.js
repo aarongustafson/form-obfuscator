@@ -5,6 +5,7 @@ class FormObfuscatorElement extends HTMLElement {
 		this.__character = this.getAttribute( "character" );
 		this.__maxlength = this.getAttribute( "maxlength" );
 		this.__pattern = this.getAttribute( "pattern" );
+    this.__replacer = this.getAttribute( "replacer" );
 
 		this.__init();
 	}
@@ -28,11 +29,7 @@ class FormObfuscatorElement extends HTMLElement {
 
 	__sanitizeAttributes() {
 		// character can only be a single character
-		if ( this.__character ) {
-			if ( [...this.__character].length > 1 ) {
-				this.__warn(`character attribute should only be a single character, ${this.__character} is invalid`);
-			}
-		} else {
+		if ( ! this.__character ) {
 			this.__character = "*";
 		}
 
@@ -46,9 +43,9 @@ class FormObfuscatorElement extends HTMLElement {
 		}
 
 		// Maxlength negated pattern
-		if ( this.__maxlength ) {
-			this.__pattern = null;
-		}
+		//if ( this.__maxlength ) {
+		//	this.__pattern = null;
+		//}
 
 		// Pattern must be a valid regular expression
 		if ( this.__pattern ) {
@@ -57,6 +54,22 @@ class FormObfuscatorElement extends HTMLElement {
 				this.__warn("pattern attribute must be a valid Regular Expression");
 				this.__pattern = null;
 			}
+		}
+
+    // Replacer must be a function and requires pattern too
+		if ( this.__replacer ) {
+			if ( ! this.__pattern ) {
+        this.__warn("replacer attribute requires a pattern attribute as well");
+				this.__replacer = null;
+      } else {
+        const replacer = new Function( this.__replacer );
+        if ( !( replacer instanceof Function ) ) {
+          this.__warn("replacer attribute must be a valid Function");
+          this.__replacer = null;
+        } else {
+          this.__replacer = replacer;
+        }
+      }
 		}
 	}
 
@@ -81,14 +94,18 @@ class FormObfuscatorElement extends HTMLElement {
 			const pattern = new RegExp( this.__pattern );
 			if ( initial_value.match( pattern ) ) {
 				replace_everything = false;
-				new_value = initial_value.replace( pattern, ( match, index, string ) => {
-					const before = string.substring( 0, index ).replace( re_all_chars, char );
-					const after = string.substring( index + match.length, string.length ).replace( re_all_chars, char );
-					return before + match + after;
-				});
-				char = "[\^$.|?*+()".split("").includes( char ) ? `\\${char}` : char;
-				const obfuscated_pattern = new RegExp( `^[^${char}]*?(${char}*${this.__pattern}${char}*)[^${char}]*?$` );
-				new_value = new_value.replace( obfuscated_pattern, "$1" );	
+        if ( this.__replacer ) {
+          new_value = initial_value.replace( pattern, this.__replacer );
+        } else {
+          new_value = initial_value.replace( pattern, ( match, index, string ) => {
+            const before = string.substring( 0, index ).replace( re_all_chars, char );
+            const after = string.substring( index + match.length, string.length ).replace( re_all_chars, char );
+            return before + match + after;
+          });
+          char = "[\^$.|?*+()".split("").includes( char ) ? `\\${char}` : char;
+          const obfuscated_pattern = new RegExp( `^[^${char}]*?(${char}*${this.__pattern}${char}*)[^${char}]*?$` );
+          new_value = new_value.replace( obfuscated_pattern, "$1" );	
+        }
 			}
 		}
 		

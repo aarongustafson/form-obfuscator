@@ -88,7 +88,7 @@
 			<form-obfuscator pattern="\d{4}$">
 				<label for="field-5">Example 5</label>
 				<input id="field-5" name="field-5" value="1234567890123456">
-				<small>Pattern: the value will be obfuscated withn the sxception of the last 4 digits</small>
+				<small>Pattern: the value will be obfuscated withn the exception of the last 4 digits</small>
 			</form-obfuscator>
 
 			<form-obfuscator pattern="est$">
@@ -97,17 +97,46 @@
 				<small>Pattern: the whole value will be hidden as the pattern is not matched</small>
 			</form-obfuscator>
 
+      <h2>Pattern + Custom Replacer</h2>
+
+      <script>
+        function cardNumberReplacer() {
+          var beginning = arguments[0][1];
+          var final_digits = arguments[0][2];
+          return beginning.replace(/\d/g, "*") + final_digits;
+        }
+      </script>
+			<form-obfuscator pattern="^((?:[\d]+\-)+)(\d+)$" replacer="return cardNumberReplacer( arguments )">
+				<label for="field-7">Example 7</label>
+				<input id="field-7" name="field-7" value="1234-121223-12341224-21334">
+				<small>Pattern: the value will be obfuscated with all numbers replaced by * with the exception of the last group of numbers</small>
+			</form-obfuscator>
+
+      <script>
+        function emailReplacer() {
+          console.log(arguments);
+          var username = arguments[0][1];
+          var domain = arguments[0][2];
+          return username.replace(/./g, "*") + domain;
+        }
+      </script>
+			<form-obfuscator pattern="^(.*?)(@.+)$" replacer="return emailReplacer( arguments )">
+				<label for="field-8">Example 8</label>
+				<input id="field-8" name="field-8" value="foobar@domain.tld">
+				<small>Pattern: the username of the email will be obfuscated, the remainder will be visible.</small>
+			</form-obfuscator>
+
 			<h2>Combinations</h2>
 
 			<form-obfuscator pattern="\d{4}$" maxlength="6">
-				<label for="field-7">Example 7</label>
-				<input id="field-7" name="field-7" value="1234567890123456">
+				<label for="field-9">Example 9</label>
+				<input id="field-9" name="field-9" value="1234567890123456">
 				<small>Maxlength + pattern: pattern will be ignored and the value will be truncated to 6 characters</small>
 			</form-obfuscator>
 
 			<form-obfuscator pattern="\d{4}$" character="~">
-				<label for="field-8">Example 8</label>
-				<input id="field-8" name="field-8" value="1234567890123456">
+				<label for="field-10">Example 10</label>
+				<input id="field-10" name="field-10" value="1234567890123456">
 				<small>Character + pattern: all but match will be obfuscated with ~</small>
 			</form-obfuscator>
 
