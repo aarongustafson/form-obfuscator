@@ -1,13 +1,15 @@
 export class FormObfuscatorElement extends HTMLElement {
 	connectedCallback() {
-		this.__$fields = this.querySelector("input:not([type=submit],[type=image],[type=button],[type=file],[type=color],[type=range],[type=radio],[type=checkbox])");
-		
-		this.__character = this.getAttribute( "character" );
-		this.__maxlength = this.getAttribute( "maxlength" );
-		this.__pattern = this.getAttribute( "pattern" );
-    this.__replacer = this.getAttribute( "replacer" );
+		setTimeout(()=>{
+      this.__$fields = this.querySelector("input:not([type=submit],[type=image],[type=button],[type=file],[type=color],[type=range],[type=radio],[type=checkbox])");
+      
+      this.__character = this.getAttribute( "character" );
+      this.__maxlength = this.getAttribute( "maxlength" );
+      this.__pattern = this.getAttribute( "pattern" );
+      this.__replacer = this.getAttribute( "replacer" );
 
-		this.__init();
+      this.__init();
+    });
 	}
 
 	__warn( message ) {
