@@ -1,6 +1,59 @@
 # Form Field Obfuscation Web Component
 
-There is no standard way to have a field’s contents be readable while editing and obfuscated while at rest. The closest we get is the ["password reveal" pattern](https://github.com/sunnywalker/show-password-toggle), but that isn’t as customizable for regular fields. The `form-obfuscator` web component enables that.
+There is no standard way to have a field's contents be readable while editing and obfuscated while at rest. The closest we get is the ["password reveal" pattern](https://github.com/sunnywalker/show-password-toggle), but that isn't as customizable for regular fields. The `form-obfuscator` web component enables that.
+
+## Installation
+
+```bash
+npm install @aarongustafson/form-obfuscator
+```
+
+## Usage
+
+### Option 1: Auto-define the custom element (easiest)
+
+Import the package to automatically define the `<form-obfuscator>` custom element:
+
+```javascript
+import '@aarongustafson/form-obfuscator';
+```
+
+Or use the define-only script in HTML:
+
+```html
+<script src="./node_modules/@aarongustafson/form-obfuscator/define.js" type="module"></script>
+```
+
+### Option 2: Import the class and define manually
+
+Import the class and define the custom element with your preferred tag name:
+
+```javascript
+import { FormObfuscatorElement } from '@aarongustafson/form-obfuscator/form-obfuscator.js';
+
+// Define with default name
+customElements.define('form-obfuscator', FormObfuscatorElement);
+
+// Or define with a custom name
+customElements.define('my-field-obfuscator', FormObfuscatorElement);
+```
+
+### Option 3: Import everything (class + auto-define)
+
+Get both the class export and automatic element definition:
+
+```javascript
+import { FormObfuscatorElement } from '@aarongustafson/form-obfuscator';
+// The custom element is now defined AND you have access to the class
+```
+
+### CDN Usage
+
+You can also use the component directly from a CDN:
+
+```html
+<script src="https://unpkg.com/@aarongustafson/form-obfuscator/define.js" type="module"></script>
+```
 
 ## API
 
@@ -30,11 +83,48 @@ All field values will be duplicated into a hidden field, which is the field that
 
 ```html
 <form-obfuscator>
-  <label for="my-field">Field Label</label>
-  <input id="my-field" name="foo">
+	<label for="my-field">Field Label</label>
+	<input id="my-field" name="foo" />
 </form-obfuscator>
 ```
 
 ## Demo
 
-[Live Demo](https://aarongustafson.github.io/form-obfuscator/demo.html) ([Source](./demo.html))
+[Live Demo](https://aarongustafson.github.io/form-obfuscator/demo/) ([Source](./demo/))
+
+## Browser Support
+
+This web component works in all modern browsers that support:
+
+- Custom Elements v1
+- ES Modules (for module usage)
+
+For older browsers, you may need polyfills for Custom Elements.
+
+## Development
+
+### Testing
+
+```bash
+# Run tests
+npm test
+
+# Run tests once
+npm run test:run
+
+# Run tests with UI
+npm run test:ui
+
+# Run tests with coverage
+npm run test:coverage
+```
+
+### Linting and Formatting
+
+```bash
+# Lint code
+npm run lint
+
+# Format code
+npm run format
+```
