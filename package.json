@@ -1,32 +1,80 @@
 {
 	"name": "@aarongustafson/form-obfuscator",
-	"version": "1.0.0",
-	"description": "Web component that obfuscates fields when they don’t have focus.",
-	"main": "form-obfuscator.js",
-	"module": "form-obfuscator.module.js",
-	"customElements": "custom-elements.json",
-	"publishConfig": {
-		"access": "public"
-	},
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
+	"version": "2.0.0",
+	"description": "Web component that obfuscates fields when they don't have focus.",
+	"keywords": [
+		"html",
+		"custom element",
+		"web component",
+		"forms",
+		"form security",
+		"obfuscation",
+		"privacy",
+		"accessibility",
+		"a11y"
+	],
+	"author": "Aaron Gustafson <aaron@easy-designs.net> (https://www.aaron-gustafson.com/)",
+	"license": "MIT",
+	"homepage": "https://github.com/aarongustafson/form-obfuscator#readme",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/aarongustafson/form-obfuscator.git"
 	},
-	"author": "Aaron Gustafson <aaron@easy-designs.net> (https://www.aaron-gustafson.com/)",
-	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/aarongustafson/form-obfuscator/issues"
 	},
-	"homepage": "https://github.com/aarongustafson/form-obfuscator#readme",
-	"devDependencies": {
-		"prettier": "^3.3.2"
+	"type": "module",
+	"main": "index.js",
+	"module": "form-obfuscator.js",
+	"customElements": "custom-elements.json",
+	"exports": {
+		".": {
+			"import": "./index.js"
+		},
+		"./form-obfuscator.js": {
+			"import": "./form-obfuscator.js"
+		},
+		"./define.js": {
+			"import": "./define.js"
+		},
+		"./custom-elements.json": "./custom-elements.json"
 	},
-	"keywords": [
-		"html",
-		"custom element",
-		"forms"
-	]
+	"files": [
+		"form-obfuscator.js",
+		"define.js",
+		"index.js",
+		"custom-elements.json",
+		"README.md",
+		"LICENSE"
+	],
+	"engines": {
+		"node": ">=14.0.0"
+	},
+	"scripts": {
+		"test": "vitest",
+		"test:ui": "vitest --ui",
+		"test:run": "vitest run",
+		"test:coverage": "vitest run --coverage",
+		"lint": "npm run lint:eslint && npm run lint:prettier",
+		"format": "npm run format:eslint && npm run format:prettier",
+		"lint:eslint": "eslint .",
+		"format:eslint": "eslint . --fix",
+		"lint:prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
+		"format:prettier": "prettier \"**/*.js\" --write --ignore-path .gitignore"
+	},
+	"devDependencies": {
+		"@open-wc/eslint-config": "^13.0.0",
+		"@testing-library/dom": "^10.4.1",
+		"@testing-library/user-event": "^14.6.1",
+		"@vitest/coverage-v8": "^4.0.10",
+		"@vitest/ui": "^4.0.10",
+		"eslint": "^9.39.1",
+		"eslint-config-prettier": "^10.1.8",
+		"happy-dom": "^20.0.10",
+		"prettier": "^3.6.2",
+		"vitest": "^4.0.10"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
 }
