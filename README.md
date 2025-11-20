@@ -90,7 +90,7 @@ All field values will be duplicated into a hidden field, which is the field that
 
 ## Demo
 
-[Live Demo](https://aarongustafson.github.io/form-obfuscator/demo/) ([Source](./demo/))
+[Live Demo](https://aarongustafson.github.io/form-obfuscator/demo/) ([Source](./demo/index.html))
 
 ## Browser Support
 
