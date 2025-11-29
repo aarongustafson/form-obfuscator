@@ -1,197 +1,684 @@
+<!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Form Obfuscation Web Component Demo</title>
+		<title>&lt;form-obfuscator&gt; Web Component Demo</title>
+		<link rel="stylesheet" href="./styles.css" />
 		<style>
-			body {
-				margin: 1rem;
-			}
-			legend,
-			label {
-				font-weight: bold;
+			/* Demo-specific styles */
+			output {
 				display: block;
+				background: #f5f5f5;
+				padding: 1rem;
+				border-radius: 4px;
+				border: 1px solid #ddd;
+				font-family: 'Courier New', Courier, monospace;
+				font-size: 0.875rem;
+				white-space: pre-wrap;
+				max-height: 300px;
+				overflow-y: auto;
 				margin-block: 1rem;
-			}
-			label:has(+ input) {
-				margin-block-end: 0;
-			}
-			fieldset {
-				margin-block: 1rem;
-				border: 0;
-				padding: 0;
-			}
-			legend {
-				margin-block: 0;
-			}
-			fieldset > label {
-				font-weight: normal;
-				margin-block: 0.25rem;
-				min-height: 23px;
-			}
-			input:not(
-				[type='checkbox'],
-				[type='radio'],
-				[type='submit'],
-				[type='reset']
-			),
-			select,
-			textarea {
-				display: block;
-			}
-			small {
-				display: block;
-				font-style: italic;
-				font-weight: normal;
-				margin-block: 0.5rem 1rem;
-			}
-
-			overflow {
-				max-block-size: 14rem;
-				overflow-y: scroll;
-				background: #ccc;
-				display: block;
-				border: 0.5rem solid #ccc;
 			}
 		</style>
 	</head>
 	<body>
-		<h1>Form Obfuscation Web Component Demo</h1>
-		<form action="#">
-			<form-obfuscator>
-				<label for="field-1">Example 1</label>
-				<input id="field-1" name="field-1" value="test" />
-				<small
-					>Default behavior: full value will be obfuscated with
-					asterisks (*)</small
+		<header>
+			<h1>&lt;form-obfuscator&gt;</h1>
+			<p>
+				A web component that obfuscates form field values when they
+				don't have focus, while keeping the actual values readable while
+				editing. See the
+				<a
+					href="https://github.com/aarongustafson/form-obfuscator/blob/main/README.md"
+					>README</a
 				>
-			</form-obfuscator>
+				for installation and API documentation.
+			</p>
+			<p>
+				<strong>How it works:</strong> Field values appear normal while
+				focused and become obfuscated when the field loses focus. The
+				actual value is stored in a hidden field for form submission.
+			</p>
+		</header>
 
-			<h2>Character Replacements</h2>
+		<main>
+			<section>
+				<h2>Basic Obfuscation</h2>
+				<p>
+					The simplest usage: wrap a form field with
+					<code>&lt;form-obfuscator&gt;</code> to obfuscate its value
+					when not focused.
+				</p>
 
-			<form-obfuscator character="•">
-				<label for="field-2">Example 2</label>
-				<input id="field-2" name="field-2" value="test" />
-				<small>Character: full value will be obfuscated with •</small>
-			</form-obfuscator>
+				<div class="demo-section">
+					<div class="code-demo-pair">
+						<div class="code">
+							<pre><code>&lt;<mark>form-obfuscator</mark>&gt;
+  &lt;label for="basic-example"&gt;
+    Password
+  &lt;/label&gt;
+  &lt;input
+    type="text"
+    id="basic-example"
+  /&gt;
+&lt;/<mark>form-obfuscator</mark>&gt;</code></pre>
+						</div>
+						<div class="demo">
+							<form-obfuscator>
+								<label for="basic-example">Password</label>
+								<input type="text" id="basic-example" />
+							</form-obfuscator>
+							<small>
+								Try typing in the field, then clicking outside
+								of it.
+							</small>
+						</div>
+					</div>
+				</div>
+			</section>
 
-			<form-obfuscator character="✖︎">
-				<label for="field-3">Example 3</label>
-				<input id="field-3" name="field-3" value="test" />
-				<small>Character: full value will be obfuscated with ✖︎</small>
-			</form-obfuscator>
+			<section>
+				<h2>Custom Characters</h2>
+				<p>
+					Use the <code>characters</code> attribute to specify which
+					characters to use for obfuscation. Default is "*".
+				</p>
 
-			<h2>Maxlength</h2>
+				<div class="demo-section">
+					<div class="code-demo-pair">
+						<div class="code">
+							<pre><code>&lt;<mark>form-obfuscator character="•"</mark>&gt;
+  &lt;label for="bullet-example"&gt;
+    Bullet Obfuscation
+  &lt;/label&gt;
+  &lt;input
+    type="text"
+    id="bullet-example"
+  /&gt;
+&lt;/<mark>form-obfuscator</mark>&gt;
 
-			<form-obfuscator maxlength="1">
-				<label for="field-4">Example 4</label>
-				<input id="field-4" name="field-4" value="test" />
-				<small
-					>Maxlength: the value will be obfuscated and truncated to a
-					single character</small
-				>
-			</form-obfuscator>
+&lt;<mark>form-obfuscator character="X"</mark>&gt;
+  &lt;label for="x-example"&gt;
+    X Obfuscation
+  &lt;/label&gt;
+  &lt;input
+    type="text"
+    id="x-example"
+  /&gt;
+&lt;/<mark>form-obfuscator</mark>&gt;</code></pre>
+						</div>
+						<div class="demo">
+							<form-obfuscator character="•">
+								<label for="bullet-example"
+									>Bullet Obfuscation</label
+								>
+								<input type="text" id="bullet-example" />
+							</form-obfuscator>
 
-			<h2>Patterns</h2>
+							<form-obfuscator character="X">
+								<label for="x-example">X Obfuscation</label>
+								<input type="text" id="x-example" />
+							</form-obfuscator>
+						</div>
+					</div>
+				</div>
+			</section>
 
-			<form-obfuscator pattern="\d{4}$">
-				<label for="field-5">Example 5</label>
-				<input id="field-5" name="field-5" value="1234567890123456" />
-				<small
-					>Pattern: the value will be obfuscated with the exception of
-					the last 4 digits</small
-				>
-			</form-obfuscator>
+			<section>
+				<h2>Pattern-Based Obfuscation</h2>
+				<p>
+					Use the <code>pattern</code> attribute to selectively
+					obfuscate specific characters. Useful for formats like phone
+					numbers, SSNs, or credit cards.
+				</p>
 
-			<form-obfuscator pattern="est$">
-				<label for="field-6">Example 6</label>
-				<input id="field-6" name="field-6" value="1234567890123456" />
-				<small
-					>Pattern: the whole value will be hidden as the pattern is
-					not matched</small
-				>
-			</form-obfuscator>
+				<div class="demo-section">
+					<div class="code-demo-pair">
+						<div class="code">
+							<pre><code>&lt;<mark>form-obfuscator pattern="\d{4}$"</mark>&gt;
+  &lt;label for="ssn-example"&gt;
+    SSN (shows last 4 digits)
+  &lt;/label&gt;
+  &lt;input
+    type="text"
+    id="ssn-example"
+    placeholder="123-45-6789"
+  /&gt;
+&lt;/<mark>form-obfuscator</mark>&gt;
 
-			<h2>Pattern + Custom Replacer</h2>
+&lt;<mark>form-obfuscator pattern="\d{4}$"</mark>&gt;
+  &lt;label for="phone-example"&gt;
+    Phone (shows last 4 digits)
+  &lt;/label&gt;
+  &lt;input
+    type="text"
+    id="phone-example"
+    placeholder="(555) 123-4567"
+  /&gt;
+&lt;/<mark>form-obfuscator</mark>&gt;</code></pre>
+						</div>
+						<div class="demo">
+							<form-obfuscator pattern="\d{4}$">
+								<label for="ssn-example"
+									>SSN (shows last 4 digits)</label
+								>
+								<input
+									type="text"
+									id="ssn-example"
+									placeholder="123-45-6789"
+								/>
+							</form-obfuscator>
 
-			<script>
-				function cardNumberReplacer() {
-					var beginning = arguments[0][1];
-					var final_digits = arguments[0][2];
-					return beginning.replace(/\d/g, '*') + final_digits;
-				}
-			</script>
-			<form-obfuscator
-				pattern="^((?:[\d]+\-)+)(\d+)$"
-				replacer="return cardNumberReplacer( arguments )"
-			>
-				<label for="field-7">Example 7</label>
-				<input
-					id="field-7"
-					name="field-7"
-					value="1234-121223-12341224-21334"
-				/>
-				<small
-					>Pattern: the value will be obfuscated with all numbers
-					replaced by * with the exception of the last group of
-					numbers</small
-				>
-			</form-obfuscator>
+							<form-obfuscator pattern="\d{4}$">
+								<label for="phone-example"
+									>Phone (shows last 4 digits)</label
+								>
+								<input
+									type="text"
+									id="phone-example"
+									placeholder="(555) 123-4567"
+								/>
+							</form-obfuscator>
+							<small>
+								The pattern matches the last 4 digits, keeping
+								them visible while obfuscating everything else.
+							</small>
+						</div>
+					</div>
+				</div>
+			</section>
 
-			<script>
-				function emailReplacer() {
-					console.log(arguments);
-					var username = arguments[0][1];
-					var domain = arguments[0][2];
-					return username.replace(/./g, '*') + domain;
-				}
-			</script>
-			<form-obfuscator
-				pattern="^(.*?)(@.+)$"
-				replacer="return emailReplacer( arguments )"
-			>
-				<label for="field-8">Example 8</label>
-				<input id="field-8" name="field-8" value="foobar@domain.tld" />
-				<small
-					>Pattern: the username of the email will be obfuscated, the
-					remainder will be visible.</small
-				>
-			</form-obfuscator>
+			<section>
+				<h2>Maximum Length</h2>
+				<p>
+					Use the <code>maxlength</code> attribute to limit how many
+					characters are displayed when obfuscated.
+				</p>
 
-			<h2>Combinations</h2>
+				<div class="demo-section">
+					<div class="code-demo-pair">
+						<div class="code">
+							<pre><code>&lt;<mark>form-obfuscator maxlength="4"</mark>&gt;
+  &lt;label for="max-example"&gt;
+    Long Value (max 4 chars shown)
+  &lt;/label&gt;
+  &lt;input
+    type="text"
+    id="max-example"
+    value="ThisIsAVeryLongPassword123"
+  /&gt;
+&lt;/<mark>form-obfuscator</mark>&gt;</code></pre>
+						</div>
+						<div class="demo">
+							<form-obfuscator maxlength="4">
+								<label for="max-example"
+									>Long Value (max 4 chars shown)</label
+								>
+								<input
+									type="text"
+									id="max-example"
+									value="ThisIsAVeryLongPassword123"
+								/>
+							</form-obfuscator>
+							<small>
+								Only the first 4 characters are shown when
+								obfuscated.
+							</small>
+						</div>
+					</div>
+				</div>
+			</section>
 
-			<form-obfuscator pattern="\d{4}$" maxlength="6">
-				<label for="field-9">Example 9</label>
-				<input id="field-9" name="field-9" value="1234567890123456" />
-				<small
-					>Maxlength + pattern: pattern will be ignored and the value
-					will be truncated to 6 characters</small
-				>
-			</form-obfuscator>
+			<section>
+				<h2>Custom Replacer Function</h2>
+				<p>
+					Use the <code>replacer</code> attribute to reference a
+					custom JavaScript function for complete control over
+					obfuscation.
+				</p>
 
-			<form-obfuscator pattern="\d{4}$" character="~">
-				<label for="field-10">Example 10</label>
-				<input id="field-10" name="field-10" value="1234567890123456" />
-				<small
-					>Character + pattern: all but match will be obfuscated with
-					~</small
-				>
-			</form-obfuscator>
+				<div class="demo-section">
+					<div class="code-demo-pair">
+						<div class="code">
+							<pre><code>&lt;script&gt;
+  window.customReplacer = (match) =&gt; {
+    return match.split('').map((char, i) =&gt;
+      i % 2 === 0 ? char : '▪'
+    ).join('');
+  };
+&lt;/script&gt;
 
-			<button type="submit">Submit</button>
-		</form>
+&lt;<mark>form-obfuscator
+  pattern=".*"
+  replacer="return customReplacer(arguments[0])"</mark>&gt;
+  &lt;label for="replacer-example"&gt;
+    Custom Replacer
+  &lt;/label&gt;
+  &lt;input
+    type="text"
+    id="replacer-example"
+    value="HelloWorld"
+  /&gt;
+&lt;/<mark>form-obfuscator</mark>&gt;</code></pre>
+						</div>
+						<div class="demo">
+							<script>
+								window.customReplacer = (match) => {
+									return match
+										.split('')
+										.map((char, i) =>
+											i % 2 === 0 ? char : '▪',
+										)
+										.join('');
+								};
+							</script>
+							<form-obfuscator
+								pattern=".*"
+								replacer="return customReplacer(arguments[0])"
+							>
+								<label for="replacer-example"
+									>Custom Replacer</label
+								>
+								<input
+									type="text"
+									id="replacer-example"
+									value="HelloWorld"
+								/>
+							</form-obfuscator>
+							<small>
+								Every other character is obfuscated using a
+								custom function.
+							</small>
+						</div>
+					</div>
+				</div>
+			</section>
 
-		<h2>Event Logging</h2>
-		<output></output>
-		<script>
-			var $form = document.querySelector('form');
-			var $output = document.querySelector('output');
-			function logEvent(event) {
-				$output.innerText += `${event.type} event for ${event.detail.field} with hidden ${event.detail.hidden}\r\n`;
-			}
-			$form.addEventListener('form-obfuscator:hide', logEvent, true);
-			$form.addEventListener('form-obfuscator:reveal', logEvent, true);
-		</script>
+			<section>
+				<h2>Advanced Combinations</h2>
+				<p>
+					Combine pattern with custom replacer functions for
+					sophisticated obfuscation behaviors.
+				</p>
+
+				<div class="demo-section">
+					<h3>Credit Card with Custom Replacer</h3>
+					<div class="code-demo-pair">
+						<div class="code">
+							<pre><code>&lt;script&gt;
+  function cardNumberReplacer() {
+    var beginning = arguments[0][1];
+    var final_digits = arguments[0][2];
+    return beginning.replace(/\d/g, '*') 
+      + final_digits;
+  }
+&lt;/script&gt;
+
+&lt;<mark>form-obfuscator
+  pattern="^((?:[\d]+\-)+)(\d+)$"
+  replacer="return cardNumberReplacer(arguments)"</mark>&gt;
+  &lt;label for="cc-replacer"&gt;
+    Credit Card
+  &lt;/label&gt;
+  &lt;input
+    type="text"
+    id="cc-replacer"
+    value="1234-5678-9012-3456"
+  /&gt;
+&lt;/<mark>form-obfuscator</mark>&gt;</code></pre>
+						</div>
+						<div class="demo">
+							<script>
+								function cardNumberReplacer() {
+									var beginning = arguments[0][1];
+									var final_digits = arguments[0][2];
+									return (
+										beginning.replace(/\d/g, '*') +
+										final_digits
+									);
+								}
+							</script>
+							<form-obfuscator
+								pattern="^((?:[\d]+\-)+)(\d+)$"
+								replacer="return cardNumberReplacer(arguments)"
+							>
+								<label for="cc-replacer">Credit Card</label>
+								<input
+									type="text"
+									id="cc-replacer"
+									name="cc-replacer"
+									value="1234-5678-9012-3456"
+								/>
+							</form-obfuscator>
+							<small>
+								Pattern captures groups of digits separated by
+								hyphens, keeping only the last group visible.
+							</small>
+						</div>
+					</div>
+
+					<h3>Email with Custom Replacer</h3>
+					<div class="code-demo-pair">
+						<div class="code">
+							<pre><code>&lt;script&gt;
+  function emailReplacer() {
+    var username = arguments[0][1];
+    var domain = arguments[0][2];
+    return username.replace(/./g, '*') 
+      + domain;
+  }
+&lt;/script&gt;
+
+&lt;<mark>form-obfuscator
+  pattern="^(.*?)(@.+)$"
+  replacer="return emailReplacer(arguments)"</mark>&gt;
+  &lt;label for="email-replacer"&gt;
+    Email Address
+  &lt;/label&gt;
+  &lt;input
+    type="text"
+    id="email-replacer"
+    value="user@example.com"
+  /&gt;
+&lt;/<mark>form-obfuscator</mark>&gt;</code></pre>
+						</div>
+						<div class="demo">
+							<script>
+								function emailReplacer() {
+									var username = arguments[0][1];
+									var domain = arguments[0][2];
+									return username.replace(/./g, '*') + domain;
+								}
+							</script>
+							<form-obfuscator
+								pattern="^(.*?)(@.+)$"
+								replacer="return emailReplacer(arguments)"
+							>
+								<label for="email-replacer"
+									>Email Address</label
+								>
+								<input
+									type="text"
+									id="email-replacer"
+									name="email-replacer"
+									value="user@example.com"
+								/>
+							</form-obfuscator>
+							<small>
+								Pattern separates username from domain,
+								obfuscating only the username portion.
+							</small>
+						</div>
+					</div>
+
+					<h3>Pattern + Character + Maxlength</h3>
+					<div class="code-demo-pair">
+						<div class="code">
+							<pre><code>&lt;<mark>form-obfuscator
+  pattern="\d{4}$"
+  character="•"
+  maxlength="16"</mark>&gt;
+  &lt;label for="combo-example"&gt;
+    Credit Card (limited display)
+  &lt;/label&gt;
+  &lt;input
+    type="text"
+    id="combo-example"
+    placeholder="1234-5678-9012-3456"
+  /&gt;
+&lt;/<mark>form-obfuscator</mark>&gt;</code></pre>
+						</div>
+						<div class="demo">
+							<form-obfuscator
+								pattern="\d{4}$"
+								character="•"
+								maxlength="16"
+							>
+								<label for="combo-example"
+									>Credit Card (limited display)</label
+								>
+								<input
+									type="text"
+									id="combo-example"
+									name="combo-example"
+									placeholder="1234-5678-9012-3456"
+								/>
+							</form-obfuscator>
+							<small>
+								Combines pattern (last 4 digits), custom
+								character (•), and max length (16 chars) for
+								controlled display.
+							</small>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section>
+				<h2>Real-World Example</h2>
+				<p>
+					A complete form demonstrating multiple obfuscated fields
+					working together.
+				</p>
+
+				<div class="demo-section">
+					<div class="code-demo-pair">
+						<div class="code">
+							<pre><code>&lt;form&gt;
+  &lt;<mark>form-obfuscator</mark>&gt;
+    &lt;label for="account-pwd"&gt;
+      Password
+    &lt;/label&gt;
+    &lt;input
+      type="text"
+      id="account-pwd"
+      name="password"
+    /&gt;
+  &lt;/<mark>form-obfuscator</mark>&gt;
+
+  &lt;<mark>form-obfuscator
+    pattern="\d{4}$"</mark>&gt;
+    &lt;label for="account-ssn"&gt;
+      SSN (last 4 visible)
+    &lt;/label&gt;
+    &lt;input
+      type="text"
+      id="account-ssn"
+      name="ssn"
+      placeholder="123-45-6789"
+    /&gt;
+  &lt;/<mark>form-obfuscator</mark>&gt;
+
+  &lt;<mark>form-obfuscator
+    pattern="\d{4}$"
+    character="•"</mark>&gt;
+    &lt;label for="account-cc"&gt;
+      Credit Card (last 4 visible)
+    &lt;/label&gt;
+    &lt;input
+      type="text"
+      id="account-cc"
+      name="credit_card"
+      placeholder="1234-5678-9012-3456"
+    /&gt;
+  &lt;/<mark>form-obfuscator</mark>&gt;
+
+  &lt;button type="submit"&gt;
+    Submit
+  &lt;/button&gt;
+&lt;/form&gt;</code></pre>
+						</div>
+						<div class="demo">
+							<form id="real-world-form">
+								<form-obfuscator>
+									<label for="account-pwd">Password</label>
+									<input
+										type="text"
+										id="account-pwd"
+										name="password"
+										value="MySecretPassword123"
+									/>
+								</form-obfuscator>
+
+								<form-obfuscator pattern="\d{4}$">
+									<label for="account-ssn"
+										>SSN (last 4 visible)</label
+									>
+									<input
+										type="text"
+										id="account-ssn"
+										name="ssn"
+										value="123-45-6789"
+									/>
+								</form-obfuscator>
+
+								<form-obfuscator pattern="\d{4}$" character="•">
+									<label for="account-cc"
+										>Credit Card (last 4 visible)</label
+									>
+									<input
+										type="text"
+										id="account-cc"
+										name="credit_card"
+										value="1234-5678-9012-3456"
+									/>
+								</form-obfuscator>
+
+								<button type="submit">Submit</button>
+							</form>
+							<small>
+								All sensitive fields are obfuscated when not in
+								focus. Try clicking into a field to see the real
+								value.
+							</small>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section>
+			<h2>Event Handling</h2>
+			<p>
+				The component dispatches <code>form-obfuscator:hide</code> and
+				<code>form-obfuscator:reveal</code> events when values are hidden or shown.
+			</p>				<div class="demo-section">
+					<div class="code-demo-pair">
+						<div class="code">
+							<pre><code>&lt;script&gt;
+  const obfuscator = 
+    document.querySelector(
+      'form-obfuscator'
+    );
+  
+  obfuscator.addEventListener(
+    'form-obfuscator:hide',
+    (e) =&gt; {
+      console.log('Obfuscated:', 
+        e.detail.field.value);
+    }
+  );
+  
+  obfuscator.addEventListener(
+    'form-obfuscator:reveal',
+    (e) =&gt; {
+      console.log('Revealed:', 
+        e.detail.field.value);
+    }
+  );
+&lt;/script&gt;
+
+&lt;<mark>form-obfuscator</mark>&gt;
+  &lt;label for="event-example"&gt;
+    Event Demo
+  &lt;/label&gt;
+  &lt;input
+    type="text"
+    id="event-example"
+  /&gt;
+&lt;/<mark>form-obfuscator</mark>&gt;</code></pre>
+						</div>
+						<div class="demo">
+							<form-obfuscator id="event-obfuscator">
+								<label for="event-example">Event Demo</label>
+								<input type="text" id="event-example" />
+							</form-obfuscator>
+
+							<output id="event-log" aria-live="polite"
+								>Event log appears here...</output
+							>
+
+							<script>
+								const eventObfuscator =
+									document.getElementById('event-obfuscator');
+								const eventLog =
+									document.getElementById('event-log');
+								const logs = [];
+
+								eventObfuscator.addEventListener(
+									'form-obfuscator:hide',
+									(e) => {
+										logs.push(
+											`[${new Date().toLocaleTimeString()}] Obfuscated: "${e.detail.field.value}"`,
+										);
+										eventLog.textContent = logs.join('\n');
+									},
+								);
+
+								eventObfuscator.addEventListener(
+									'form-obfuscator:reveal',
+									(e) => {
+										logs.push(
+											`[${new Date().toLocaleTimeString()}] Revealed: "${e.detail.field.value}"`,
+										);
+										eventLog.textContent = logs.join('\n');
+									},
+								);
+							</script>
+							<small>
+								Focus and blur the field to see event logging
+								below.
+							</small>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h2>API Reference</h2>
+				<p>For complete API documentation, see the project README:</p>
+				<ul>
+					<li>
+						<a
+							href="https://github.com/aarongustafson/form-obfuscator/blob/main/README.md#attributes"
+							>Attributes</a
+						>
+					</li>
+					<li>
+						<a
+							href="https://github.com/aarongustafson/form-obfuscator/blob/main/README.md#events"
+							>Events</a
+						>
+					</li>
+					<li>
+						<a
+							href="https://github.com/aarongustafson/form-obfuscator/blob/main/README.md#how-it-works"
+							>How It Works</a
+						>
+					</li>
+				</ul>
+			</section>
+		</main>
+
+		<footer>
+			<p>
+				Made with ❤️ by
+				<a href="https://github.com/aarongustafson">Aaron Gustafson</a>.
+				View the source on
+				<a href="https://github.com/aarongustafson/form-obfuscator"
+					>GitHub</a
+				>.
+			</p>
+		</footer>
 
 		<script type="module" src="../index.js"></script>
 	</body>
