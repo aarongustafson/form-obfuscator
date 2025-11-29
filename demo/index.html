@@ -24,7 +24,9 @@
 	</head>
 	<body>
 		<header>
-			<h1>&lt;form-obfuscator&gt;</h1>
+			<h1>
+				Form Obfuscator Web Component (<code>form-obfuscator</code>)
+			</h1>
 			<p>
 				A web component that obfuscates form field values when they
 				don't have focus, while keeping the actual values readable while
@@ -47,14 +49,14 @@
 				<h2>Basic Obfuscation</h2>
 				<p>
 					The simplest usage: wrap a form field with
-					<code>&lt;form-obfuscator&gt;</code> to obfuscate its value
-					when not focused.
+					<code>form-obfuscator</code> to obfuscate its value when not
+					focused.
 				</p>
 
 				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre><code>&lt;<mark>form-obfuscator</mark>&gt;
+							<pre><code><mark>&lt;form-obfuscator&gt;</mark>
   &lt;label for="basic-example"&gt;
     Password
   &lt;/label&gt;
@@ -62,7 +64,7 @@
     type="text"
     id="basic-example"
   /&gt;
-&lt;/<mark>form-obfuscator</mark>&gt;</code></pre>
+<mark>&lt;/form-obfuscator&gt;</mark></code></pre>
 						</div>
 						<div class="demo">
 							<form-obfuscator>
@@ -88,7 +90,7 @@
 				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre><code>&lt;<mark>form-obfuscator character="•"</mark>&gt;
+							<pre><code><mark>&lt;form-obfuscator character="•"&gt;</mark>
   &lt;label for="bullet-example"&gt;
     Bullet Obfuscation
   &lt;/label&gt;
@@ -96,9 +98,9 @@
     type="text"
     id="bullet-example"
   /&gt;
-&lt;/<mark>form-obfuscator</mark>&gt;
+<mark>&lt;/form-obfuscator&gt; </mark>
 
-&lt;<mark>form-obfuscator character="X"</mark>&gt;
+<mark>&lt;form-obfuscator character="X"&gt;</mark>
   &lt;label for="x-example"&gt;
     X Obfuscation
   &lt;/label&gt;
@@ -106,7 +108,7 @@
     type="text"
     id="x-example"
   /&gt;
-&lt;/<mark>form-obfuscator</mark>&gt;</code></pre>
+<mark>&lt;/form-obfuscator&gt; </mark></code></pre>
 						</div>
 						<div class="demo">
 							<form-obfuscator character="•">
@@ -136,7 +138,7 @@
 				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre><code>&lt;<mark>form-obfuscator pattern="\d{4}$"</mark>&gt;
+							<pre><code><mark>&lt;form-obfuscator pattern="\d{4}$"&gt;</mark>
   &lt;label for="ssn-example"&gt;
     SSN (shows last 4 digits)
   &lt;/label&gt;
@@ -145,9 +147,9 @@
     id="ssn-example"
     placeholder="123-45-6789"
   /&gt;
-&lt;/<mark>form-obfuscator</mark>&gt;
+<mark>&lt;/form-obfuscator&gt; </mark>
 
-&lt;<mark>form-obfuscator pattern="\d{4}$"</mark>&gt;
+<mark>&lt;form-obfuscator pattern="\d{4}$"&gt;</mark>
   &lt;label for="phone-example"&gt;
     Phone (shows last 4 digits)
   &lt;/label&gt;
@@ -156,7 +158,7 @@
     id="phone-example"
     placeholder="(555) 123-4567"
   /&gt;
-&lt;/<mark>form-obfuscator</mark>&gt;</code></pre>
+<mark>&lt;/form-obfuscator&gt; </mark></code></pre>
 						</div>
 						<div class="demo">
 							<form-obfuscator pattern="\d{4}$">
@@ -199,7 +201,7 @@
 				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre><code>&lt;<mark>form-obfuscator maxlength="4"</mark>&gt;
+							<pre><code><mark>&lt;form-obfuscator maxlength="4"&gt;</mark>
   &lt;label for="max-example"&gt;
     Long Value (max 4 chars shown)
   &lt;/label&gt;
@@ -208,7 +210,7 @@
     id="max-example"
     value="ThisIsAVeryLongPassword123"
   /&gt;
-&lt;/<mark>form-obfuscator</mark>&gt;</code></pre>
+<mark>&lt;/form-obfuscator&gt; </mark></code></pre>
 						</div>
 						<div class="demo">
 							<form-obfuscator maxlength="4">
@@ -249,9 +251,9 @@
   };
 &lt;/script&gt;
 
-&lt;<mark>form-obfuscator
+<mark>&lt;form-obfuscator
   pattern=".*"
-  replacer="return customReplacer(arguments[0])"</mark>&gt;
+  replacer="return customReplacer(arguments[0])"&gt;</mark>
   &lt;label for="replacer-example"&gt;
     Custom Replacer
   &lt;/label&gt;
@@ -260,7 +262,7 @@
     id="replacer-example"
     value="HelloWorld"
   /&gt;
-&lt;/<mark>form-obfuscator</mark>&gt;</code></pre>
+<mark>&lt;/form-obfuscator&gt; </mark></code></pre>
 						</div>
 						<div class="demo">
 							<script>
@@ -315,9 +317,9 @@
   }
 &lt;/script&gt;
 
-&lt;<mark>form-obfuscator
+<mark>&lt;form-obfuscator
   pattern="^((?:[\d]+\-)+)(\d+)$"
-  replacer="return cardNumberReplacer(arguments)"</mark>&gt;
+  replacer="return cardNumberReplacer(arguments)"&gt;</mark>
   &lt;label for="cc-replacer"&gt;
     Credit Card
   &lt;/label&gt;
@@ -326,7 +328,7 @@
     id="cc-replacer"
     value="1234-5678-9012-3456"
   /&gt;
-&lt;/<mark>form-obfuscator</mark>&gt;</code></pre>
+<mark>&lt;/form-obfuscator&gt; </mark></code></pre>
 						</div>
 						<div class="demo">
 							<script>
@@ -370,9 +372,9 @@
   }
 &lt;/script&gt;
 
-&lt;<mark>form-obfuscator
+<mark>&lt;form-obfuscator
   pattern="^(.*?)(@.+)$"
-  replacer="return emailReplacer(arguments)"</mark>&gt;
+  replacer="return emailReplacer(arguments)"&gt;</mark>
   &lt;label for="email-replacer"&gt;
     Email Address
   &lt;/label&gt;
@@ -381,7 +383,7 @@
     id="email-replacer"
     value="user@example.com"
   /&gt;
-&lt;/<mark>form-obfuscator</mark>&gt;</code></pre>
+<mark>&lt;/form-obfuscator&gt; </mark></code></pre>
 						</div>
 						<div class="demo">
 							<script>
@@ -415,10 +417,10 @@
 					<h3>Pattern + Character + Maxlength</h3>
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre><code>&lt;<mark>form-obfuscator
+							<pre><code><mark>&lt;form-obfuscator
   pattern="\d{4}$"
   character="•"
-  maxlength="16"</mark>&gt;
+  maxlength="16"&gt;</mark>
   &lt;label for="combo-example"&gt;
     Credit Card (limited display)
   &lt;/label&gt;
@@ -427,7 +429,7 @@
     id="combo-example"
     placeholder="1234-5678-9012-3456"
   /&gt;
-&lt;/<mark>form-obfuscator</mark>&gt;</code></pre>
+<mark>&lt;/form-obfuscator&gt; </mark></code></pre>
 						</div>
 						<div class="demo">
 							<form-obfuscator
@@ -465,7 +467,7 @@
 					<div class="code-demo-pair">
 						<div class="code">
 							<pre><code>&lt;form&gt;
-  &lt;<mark>form-obfuscator</mark>&gt;
+  <mark>&lt;form-obfuscator&gt;</mark>
     &lt;label for="account-pwd"&gt;
       Password
     &lt;/label&gt;
@@ -474,10 +476,10 @@
       id="account-pwd"
       name="password"
     /&gt;
-  &lt;/<mark>form-obfuscator</mark>&gt;
+  <mark>&lt;/form-obfuscator&gt; </mark>
 
-  &lt;<mark>form-obfuscator
-    pattern="\d{4}$"</mark>&gt;
+  <mark>&lt;form-obfuscator
+    pattern="\d{4}$"&gt;</mark>
     &lt;label for="account-ssn"&gt;
       SSN (last 4 visible)
     &lt;/label&gt;
@@ -487,11 +489,11 @@
       name="ssn"
       placeholder="123-45-6789"
     /&gt;
-  &lt;/<mark>form-obfuscator</mark>&gt;
+  <mark>&lt;/form-obfuscator&gt; </mark>
 
-  &lt;<mark>form-obfuscator
+  <mark>&lt;form-obfuscator
     pattern="\d{4}$"
-    character="•"</mark>&gt;
+    character="•"&gt;</mark>
     &lt;label for="account-cc"&gt;
       Credit Card (last 4 visible)
     &lt;/label&gt;
@@ -501,7 +503,7 @@
       name="credit_card"
       placeholder="1234-5678-9012-3456"
     /&gt;
-  &lt;/<mark>form-obfuscator</mark>&gt;
+  <mark>&lt;/form-obfuscator&gt; </mark>
 
   &lt;button type="submit"&gt;
     Submit
@@ -557,11 +559,14 @@
 			</section>
 
 			<section>
-			<h2>Event Handling</h2>
-			<p>
-				The component dispatches <code>form-obfuscator:hide</code> and
-				<code>form-obfuscator:reveal</code> events when values are hidden or shown.
-			</p>				<div class="demo-section">
+				<h2>Event Handling</h2>
+				<p>
+					The component dispatches
+					<code>form-obfuscator:hide</code> and
+					<code>form-obfuscator:reveal</code> events when values are
+					hidden or shown.
+				</p>
+				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
 							<pre><code>&lt;script&gt;
@@ -587,7 +592,7 @@
   );
 &lt;/script&gt;
 
-&lt;<mark>form-obfuscator</mark>&gt;
+<mark>&lt;form-obfuscator&gt;</mark>
   &lt;label for="event-example"&gt;
     Event Demo
   &lt;/label&gt;
@@ -595,7 +600,7 @@
     type="text"
     id="event-example"
   /&gt;
-&lt;/<mark>form-obfuscator</mark>&gt;</code></pre>
+<mark>&lt;/form-obfuscator&gt; </mark></code></pre>
 						</div>
 						<div class="demo">
 							<form-obfuscator id="event-obfuscator">
