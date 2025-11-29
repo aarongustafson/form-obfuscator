@@ -1,6 +1,6 @@
 {
 	"name": "@aarongustafson/form-obfuscator",
-	"version": "2.0.2",
+	"version": "2.0.3",
 	"description": "Web component that obfuscates fields when they don't have focus.",
 	"keywords": [
 		"html",
