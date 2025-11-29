@@ -425,7 +425,35 @@ describe('FormObfuscatorElement', () => {
 			});
 		});
 
-		it('should handle empty field obfuscation', async () => {
+		it('should combine pattern, character, and maxlength correctly', async () => {
+			const form = createForm(`
+				<form-obfuscator pattern="\\d{4}$" character="•" maxlength="16">
+					<label>
+						Credit Card
+						<input type="text" name="card" value="">
+					</label>
+				</form-obfuscator>
+			`);
+
+			const formObfuscator = form.querySelector('form-obfuscator');
+			await new Promise((resolve) => setTimeout(resolve, 150));
+
+			const input = formObfuscator.querySelector('input[type="text"]');
+			await user.click(input);
+			await user.type(input, '1234-5678-9012-3456'); // 19 chars with hyphens
+			fireEvent.blur(input);
+
+			await waitFor(() => {
+				// Pattern should keep last 4 digits visible: ••••••••••••••••3456 (15 bullets + 4 digits = 19)
+				// Maxlength 16 should truncate to: ••••••••••••3456 (12 bullets + 4 digits = 16)
+				expect(input.value).toBe('••••••••••••3456');
+				expect(input.value.length).toBe(16);
+			});
+		});
+	});
+
+	describe('Comprehensive attribute tests', () => {
+		it('should handle different special characters', async () => {
 			const form = createForm(`
 				<form-obfuscator>
 					<label>
