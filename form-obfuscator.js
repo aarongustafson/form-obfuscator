@@ -9,7 +9,6 @@ export class FormObfuscatorElement extends HTMLElement {
 			this.__maxlength = this.getAttribute('maxlength');
 			this.__pattern = this.getAttribute('pattern');
 			this.__replacer = this.getAttribute('replacer');
-
 			this.__init();
 		});
 	}
@@ -97,33 +96,34 @@ export class FormObfuscatorElement extends HTMLElement {
 		let char = this.__character;
 		const re_all_chars = /./g;
 		let new_value;
+		let pattern_match_kept = false;
 
 		if (this.__pattern !== null) {
 			const pattern = new RegExp(this.__pattern);
-			if (initial_value.match(pattern)) {
+			const match_result = initial_value.match(pattern);
+			if (match_result) {
 				replace_everything = false;
+				pattern_match_kept = true;
 				if (this.__replacer) {
 					new_value = initial_value.replace(pattern, this.__replacer);
+					pattern_match_kept = false; // replacer might change the match
 				} else {
-					new_value = initial_value.replace(
-						pattern,
-						(match, index, string) => {
-							const before = string
-								.substring(0, index)
-								.replace(re_all_chars, char);
-							const after = string
-								.substring(index + match.length, string.length)
-								.replace(re_all_chars, char);
-							return before + match + after;
-						},
-					);
-					char = '[\^$.|?*+()'.split('').includes(char)
-						? `\\${char}`
-						: char;
-					const obfuscated_pattern = new RegExp(
-						`^[^${char}]*?(${char}*${this.__pattern}${char}*)[^${char}]*?$`,
-					);
-					new_value = new_value.replace(obfuscated_pattern, '$1');
+					// Obfuscate everything except the pattern match
+					const match_index = initial_value.indexOf(match_result[0]);
+					const match_length = match_result[0].length;
+
+					// If maxlength is set, calculate how many chars to obfuscate
+					let chars_to_obfuscate;
+					if (this.__maxlength !== null) {
+						chars_to_obfuscate = this.__maxlength - match_length;
+					} else {
+						chars_to_obfuscate =
+							initial_value.length - match_length;
+					}
+
+					// Build obfuscated string: obfuscated chars + visible match
+					new_value =
+						char.repeat(chars_to_obfuscate) + match_result[0];
 				}
 			}
 		}
@@ -132,7 +132,8 @@ export class FormObfuscatorElement extends HTMLElement {
 			new_value = initial_value.replace(re_all_chars, char);
 		}
 
-		if (this.__maxlength !== null) {
+		// Only apply maxlength if we didn't already account for it with pattern
+		if (this.__maxlength !== null && !pattern_match_kept) {
 			new_value = new_value.substring(0, this.__maxlength);
 		}
 
