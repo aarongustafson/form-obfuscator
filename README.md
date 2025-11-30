@@ -1,6 +1,12 @@
 # Form Field Obfuscation Web Component
 
+[![npm version](https://img.shields.io/npm/v/@aarongustafson/form-obfuscator.svg)](https://www.npmjs.com/package/@aarongustafson/form-obfuscator) [![Build Status](https://img.shields.io/github/actions/workflow/status/aarongustafson/form-obfuscator/ci.yml?branch=main)](https://github.com/aarongustafson/form-obfuscator/actions)
+
 There is no standard way to have a field's contents be readable while editing and obfuscated while at rest. The closest we get is the ["password reveal" pattern](https://github.com/sunnywalker/show-password-toggle), but that isn't as customizable for regular fields. The `form-obfuscator` web component enables that.
+
+## Demo
+
+[Live Demo](https://aarongustafson.github.io/form-obfuscator/demo/) ([Source](./demo/index.html))
 
 ## Installation
 
@@ -87,10 +93,6 @@ All field values will be duplicated into a hidden field, which is the field that
 	<input id="my-field" name="foo" />
 </form-obfuscator>
 ```
-
-## Demo
-
-[Live Demo](https://aarongustafson.github.io/form-obfuscator/demo/) ([Source](./demo/index.html))
 
 ## Browser Support
 
