@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>form-obfuscator via unpkg</title>
+		<style>
+			body {
+				font-family: system-ui, sans-serif;
+				margin: 2rem;
+				line-height: 1.5;
+			}
+
+			form-obfuscator {
+				display: block;
+				max-width: 420px;
+			}
+
+			label,
+			input {
+				display: block;
+				width: 100%;
+				font: inherit;
+			}
+
+			input {
+				margin-block: 0.5rem 1rem;
+				padding: 0.5rem;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>unpkg CDN sanity check</h1>
+		<p>
+			This page loads the guarded definition helper from
+			<code>unpkg</code> and registers the element when supported.
+		</p>
+
+		<form-obfuscator>
+			<label for="account-number">Account number</label>
+			<input id="account-number" name="account" value="1234-5678-9012" />
+		</form-obfuscator>
+
+		<script type="module">
+			import { defineFormObfuscator } from 'https://unpkg.com/@aarongustafson/form-obfuscator@latest/define.js?module';
+
+			defineFormObfuscator();
+		</script>
+	</body>
+</html>
