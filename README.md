@@ -16,26 +16,12 @@ npm install @aarongustafson/form-obfuscator
 
 ## Usage
 
-### Option 1: Auto-define the custom element (easiest)
-
-Import the package to automatically define the `<form-obfuscator>` custom element:
-
-```javascript
-import '@aarongustafson/form-obfuscator';
-```
-
-Or use the define-only script in HTML:
-
-```html
-<script src="./node_modules/@aarongustafson/form-obfuscator/define.js" type="module"></script>
-```
-
-### Option 2: Import the class and define manually
+### Option 1: Import the class and define manually
 
 Import the class and define the custom element with your preferred tag name:
 
 ```javascript
-import { FormObfuscatorElement } from '@aarongustafson/form-obfuscator/form-obfuscator.js';
+import { FormObfuscatorElement } from '@aarongustafson/form-obfuscator';
 
 // Define with default name
 customElements.define('form-obfuscator', FormObfuscatorElement);
@@ -44,13 +30,26 @@ customElements.define('form-obfuscator', FormObfuscatorElement);
 customElements.define('my-field-obfuscator', FormObfuscatorElement);
 ```
 
-### Option 3: Import everything (class + auto-define)
+### Option 2: Auto-define the custom element (browser environments only)
 
-Get both the class export and automatic element definition:
+Use the guarded definition helper to register the element when `customElements` is available:
 
 ```javascript
-import { FormObfuscatorElement } from '@aarongustafson/form-obfuscator';
-// The custom element is now defined AND you have access to the class
+import '@aarongustafson/form-obfuscator/define.js';
+```
+
+If you prefer to control when the element is registered, call the helper directly:
+
+```javascript
+import { defineFormObfuscator } from '@aarongustafson/form-obfuscator/define.js';
+
+defineFormObfuscator();
+```
+
+You can also include the guarded script from HTML:
+
+```html
+<script src="./node_modules/@aarongustafson/form-obfuscator/define.js" type="module"></script>
 ```
 
 ### CDN Usage
@@ -58,7 +57,7 @@ import { FormObfuscatorElement } from '@aarongustafson/form-obfuscator';
 You can also use the component directly from a CDN:
 
 ```html
-<script src="https://unpkg.com/@aarongustafson/form-obfuscator/define.js" type="module"></script>
+<script src="https://unpkg.com/@aarongustafson/form-obfuscator@latest/define.js" type="module"></script>
 ```
 
 ## API
