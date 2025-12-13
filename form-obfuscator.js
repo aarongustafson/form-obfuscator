@@ -238,14 +238,21 @@ export class FormObfuscatorElement extends HTMLElement {
 	__hide($field) {
 		const actualValue = $field.value;
 		const $clone = this.#fieldClones.get($field);
-		if ($clone) $clone.value = actualValue;
-		$field.value = this.__obfuscate(actualValue);
+		if ($clone && $clone.value !== actualValue) {
+			$clone.value = actualValue;
+		}
+		const obfuscated = this.__obfuscate(actualValue);
+		if ($field.value !== obfuscated) {
+			$field.value = obfuscated;
+		}
 		this.__emitEvent('hide', $field);
 	}
 
 	__reveal($field) {
 		const $clone = this.#fieldClones.get($field);
-		if ($clone) $field.value = $clone.value;
+		if ($clone && $field.value !== $clone.value) {
+			$field.value = $clone.value;
+		}
 		this.__emitEvent('reveal', $field);
 	}
 
