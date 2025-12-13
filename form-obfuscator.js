@@ -99,6 +99,13 @@ export class FormObfuscatorElement extends HTMLElement {
 		});
 	}
 
+	disconnectedCallback() {
+		if (this.#boundEventProxy) {
+			this.removeEventListener('focus', this.#boundEventProxy, true);
+			this.removeEventListener('blur', this.#boundEventProxy, true);
+		}
+	}
+
 	__warn(message) {
 		console.warn(`<form-obfuscator>: ${message}`);
 	}
