@@ -3,6 +3,14 @@ export class FormObfuscatorElement extends HTMLElement {
 		return ['character', 'maxlength', 'pattern', 'replacer'];
 	}
 
+	_upgradeProperty(prop) {
+		if (Object.prototype.hasOwnProperty.call(this, prop)) {
+			const value = this[prop];
+			delete this[prop];
+			this[prop] = value;
+		}
+	}
+
 	attributeChangedCallback(name, oldValue, newValue) {
 		if (oldValue === newValue) return;
 		switch (name) {
@@ -67,6 +75,11 @@ export class FormObfuscatorElement extends HTMLElement {
 	}
 
 	connectedCallback() {
+		// Upgrade properties set before element definition
+		this._upgradeProperty('character');
+		this._upgradeProperty('maxlength');
+		this._upgradeProperty('pattern');
+		this._upgradeProperty('replacer');
 		setTimeout(() => {
 			this.__$fields = this.querySelector(
 				'input:not([type=submit],[type=image],[type=button],[type=file],[type=color],[type=range],[type=radio],[type=checkbox])',
