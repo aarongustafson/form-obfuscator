@@ -1,14 +1,82 @@
 export class FormObfuscatorElement extends HTMLElement {
+	static get observedAttributes() {
+		return ['character', 'maxlength', 'pattern', 'replacer'];
+	}
+
+	attributeChangedCallback(name, oldValue, newValue) {
+		if (oldValue === newValue) return;
+		switch (name) {
+			case 'character':
+				this.character = newValue;
+				break;
+			case 'maxlength':
+				this.maxlength = newValue;
+				break;
+			case 'pattern':
+				this.pattern = newValue;
+				break;
+			case 'replacer':
+				this.replacer = newValue;
+				break;
+		}
+	}
+
+	get character() {
+		return this.getAttribute('character') || '*';
+	}
+	set character(val) {
+		if (val === null || val === undefined) {
+			this.removeAttribute('character');
+		} else {
+			this.setAttribute('character', val);
+		}
+	}
+
+	get maxlength() {
+		const val = this.getAttribute('maxlength');
+		return val !== null ? parseInt(val, 10) : null;
+	}
+	set maxlength(val) {
+		if (val === null || val === undefined) {
+			this.removeAttribute('maxlength');
+		} else {
+			this.setAttribute('maxlength', val);
+		}
+	}
+
+	get pattern() {
+		return this.getAttribute('pattern');
+	}
+	set pattern(val) {
+		if (val === null || val === undefined) {
+			this.removeAttribute('pattern');
+		} else {
+			this.setAttribute('pattern', val);
+		}
+	}
+
+	get replacer() {
+		return this.getAttribute('replacer');
+	}
+	set replacer(val) {
+		if (val === null || val === undefined) {
+			this.removeAttribute('replacer');
+		} else {
+			this.setAttribute('replacer', val);
+		}
+	}
+
 	connectedCallback() {
 		setTimeout(() => {
 			this.__$fields = this.querySelector(
 				'input:not([type=submit],[type=image],[type=button],[type=file],[type=color],[type=range],[type=radio],[type=checkbox])',
 			);
 
-			this.__character = this.getAttribute('character');
-			this.__maxlength = this.getAttribute('maxlength');
-			this.__pattern = this.getAttribute('pattern');
-			this.__replacer = this.getAttribute('replacer');
+			// Use reflected properties
+			this.__character = this.character;
+			this.__maxlength = this.maxlength;
+			this.__pattern = this.pattern;
+			this.__replacer = this.replacer;
 			this.__init();
 		});
 	}
