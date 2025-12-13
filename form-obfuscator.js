@@ -81,9 +81,9 @@ export class FormObfuscatorElement extends HTMLElement {
 		this._upgradeProperty('pattern');
 		this._upgradeProperty('replacer');
 		requestAnimationFrame(() => {
-			this.__$fields = this.querySelector(
+			this.__$fields = Array.from(this.querySelectorAll(
 				'input:not([type=submit],[type=image],[type=button],[type=file],[type=color],[type=range],[type=radio],[type=checkbox])',
-			);
+			));
 
 			// Use reflected properties
 			this.__character = this.character;
@@ -101,7 +101,7 @@ export class FormObfuscatorElement extends HTMLElement {
 	__createShadowElements() {
 		const $hidden = document.createElement('input');
 		$hidden.type = 'hidden';
-		[this.__$fields].forEach(($field) => {
+		this.__$fields.forEach(($field) => {
 			let $clone = $hidden.cloneNode(true);
 			$clone.name = $field.name;
 			$field.removeAttribute('name');
