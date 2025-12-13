@@ -32,7 +32,8 @@
 			"import": "./index.js"
 		},
 		"./form-obfuscator.js": {
-			"import": "./form-obfuscator.js"
+			"import": "./form-obfuscator.js",
+			"types": "./form-obfuscator.d.ts"
 		},
 		"./define.js": {
 			"import": "./define.js"
