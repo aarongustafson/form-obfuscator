@@ -1,4 +1,6 @@
 export class FormObfuscatorElement extends HTMLElement {
+	#fieldClones = new WeakMap();
+
 	static get observedAttributes() {
 		return ['character', 'maxlength', 'pattern', 'replacer'];
 	}
@@ -81,9 +83,11 @@ export class FormObfuscatorElement extends HTMLElement {
 		this._upgradeProperty('pattern');
 		this._upgradeProperty('replacer');
 		requestAnimationFrame(() => {
-			this.__$fields = Array.from(this.querySelectorAll(
-				'input:not([type=submit],[type=image],[type=button],[type=file],[type=color],[type=range],[type=radio],[type=checkbox])',
-			));
+			this.__$fields = Array.from(
+				this.querySelectorAll(
+					'input:not([type=submit],[type=image],[type=button],[type=file],[type=color],[type=range],[type=radio],[type=checkbox])',
+				),
+			);
 
 			// Use reflected properties
 			this.__character = this.character;
@@ -106,7 +110,7 @@ export class FormObfuscatorElement extends HTMLElement {
 			$clone.name = $field.name;
 			$field.removeAttribute('name');
 			$field.insertAdjacentElement('afterend', $clone);
-			$field.$clone = $clone;
+			this.#fieldClones.set($field, $clone);
 			this.__hide($field);
 		});
 	}
@@ -165,7 +169,7 @@ export class FormObfuscatorElement extends HTMLElement {
 		const event = new CustomEvent(`form-obfuscator:${type}`, {
 			detail: {
 				field: $field,
-				hidden: $field.$clone,
+				hidden: this.#fieldClones.get($field),
 			},
 		});
 		this.dispatchEvent(event);
@@ -223,13 +227,15 @@ export class FormObfuscatorElement extends HTMLElement {
 
 	__hide($field) {
 		const actualValue = $field.value;
-		$field.$clone.value = actualValue;
+		const $clone = this.#fieldClones.get($field);
+		if ($clone) $clone.value = actualValue;
 		$field.value = this.__obfuscate(actualValue);
 		this.__emitEvent('hide', $field);
 	}
 
 	__reveal($field) {
-		$field.value = $field.$clone.value;
+		const $clone = this.#fieldClones.get($field);
+		if ($clone) $field.value = $clone.value;
 		this.__emitEvent('reveal', $field);
 	}
 
