@@ -42,6 +42,7 @@
 	},
 	"files": [
 		"form-obfuscator.js",
+		"form-obfuscator.d.ts",
 		"define.js",
 		"index.js",
 		"custom-elements.json",
