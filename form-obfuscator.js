@@ -80,7 +80,7 @@ export class FormObfuscatorElement extends HTMLElement {
 		this._upgradeProperty('maxlength');
 		this._upgradeProperty('pattern');
 		this._upgradeProperty('replacer');
-		setTimeout(() => {
+		requestAnimationFrame(() => {
 			this.__$fields = this.querySelector(
 				'input:not([type=submit],[type=image],[type=button],[type=file],[type=color],[type=range],[type=radio],[type=checkbox])',
 			);
