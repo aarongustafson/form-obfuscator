@@ -774,4 +774,75 @@ describe('FormObfuscatorElement', () => {
 			});
 		});
 	});
+
+	describe('Advanced integration and memory management', () => {
+		it('should handle multiple input fields independently', async () => {
+			const form = createForm(`
+				<form-obfuscator>
+					<label>Field 1 <input type="text" name="field1" value=""></label>
+					<label>Field 2 <input type="text" name="field2" value=""></label>
+				</form-obfuscator>
+			`);
+			const formObfuscator = form.querySelector('form-obfuscator');
+			await new Promise((resolve) => setTimeout(resolve, 150));
+			const [input1, input2] = formObfuscator.querySelectorAll('input[type="text"]');
+
+			await user.click(input1);
+			await user.type(input1, 'alpha');
+			await user.click(input2);
+			await user.type(input2, 'beta');
+			// Blur both
+			input1.blur();
+			input2.blur();
+			await new Promise((resolve) => setTimeout(resolve, 50));
+			await waitFor(() => {
+				expect(input1.value).toBe('*****'); // 5 asterisks for 'alpha'
+				expect(input2.value).toBe('****');  // 4 asterisks for 'beta'
+			});
+			// Focus and check reveal
+			input1.focus();
+			await new Promise((resolve) => setTimeout(resolve, 20));
+			await waitFor(() => {
+				expect(input1.value).toBe('alpha');
+			});
+			input2.focus();
+			await new Promise((resolve) => setTimeout(resolve, 20));
+			await waitFor(() => {
+				expect(input2.value).toBe('beta');
+			});
+		});
+
+		it('should not expose $clone property on input fields', async () => {
+			const form = createForm(`
+				<form-obfuscator>
+					<label>Field <input type="text" name="field" value="foo"></label>
+				</form-obfuscator>
+			`);
+			const formObfuscator = form.querySelector('form-obfuscator');
+			await new Promise((resolve) => setTimeout(resolve, 150));
+			const input = formObfuscator.querySelector('input[type="text"]');
+			// $clone should not be present
+			expect(input.$clone).toBeUndefined();
+		});
+
+		it('should not throw or react to events after removal from DOM', async () => {
+			const form = createForm(`
+				<form-obfuscator>
+					<label>Field <input type="text" name="field" value="foo"></label>
+				</form-obfuscator>
+			`);
+			const formObfuscator = form.querySelector('form-obfuscator');
+			await new Promise((resolve) => setTimeout(resolve, 150));
+			const input = formObfuscator.querySelector('input[type="text"]');
+			await user.click(input);
+			await user.type(input, 'bar');
+			// Remove from DOM
+			formObfuscator.remove();
+			// Try to fire events (should not throw)
+			expect(() => {
+				fireEvent.blur(input);
+				fireEvent.focus(input);
+			}).not.toThrow();
+		});
+	});
 });
