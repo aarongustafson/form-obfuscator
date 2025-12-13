@@ -104,6 +104,14 @@ This web component works in all modern browsers that support:
 
 For older browsers, you may need polyfills for Custom Elements.
 
+## TypeScript Support
+
+TypeScript definitions are included with this package. You get full type support and event typings automatically when using this component in TypeScript projects.
+
+## Multiple Input Support
+
+You can place multiple text-style `input` elements inside a single `form-obfuscator`. Each input will be independently obfuscated and managed, with its own hidden field for form submission.
+
 ## Development
 
 ### Testing
