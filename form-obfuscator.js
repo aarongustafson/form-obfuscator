@@ -130,11 +130,13 @@ export class FormObfuscatorElement extends HTMLElement {
 		}
 
 		// maxlength needs to be a number
-		if (this.__maxlength) {
-			this.__maxlength = parseInt(this.__maxlength);
-			if (this.__maxlength === NaN) {
+		if (this.__maxlength !== null && this.__maxlength !== undefined) {
+			const parsed = parseInt(this.__maxlength, 10);
+			if (isNaN(parsed)) {
 				this.__warn('maxlength attribute must be a number');
 				this.__maxlength = null;
+			} else {
+				this.__maxlength = parsed;
 			}
 		}
 
