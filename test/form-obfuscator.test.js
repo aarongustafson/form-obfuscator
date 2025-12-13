@@ -785,7 +785,8 @@ describe('FormObfuscatorElement', () => {
 			`);
 			const formObfuscator = form.querySelector('form-obfuscator');
 			await new Promise((resolve) => setTimeout(resolve, 150));
-			const [input1, input2] = formObfuscator.querySelectorAll('input[type="text"]');
+			const [input1, input2] =
+				formObfuscator.querySelectorAll('input[type="text"]');
 
 			await user.click(input1);
 			await user.type(input1, 'alpha');
@@ -797,7 +798,7 @@ describe('FormObfuscatorElement', () => {
 			await new Promise((resolve) => setTimeout(resolve, 50));
 			await waitFor(() => {
 				expect(input1.value).toBe('*****'); // 5 asterisks for 'alpha'
-				expect(input2.value).toBe('****');  // 4 asterisks for 'beta'
+				expect(input2.value).toBe('****'); // 4 asterisks for 'beta'
 			});
 			// Focus and check reveal
 			input1.focus();
