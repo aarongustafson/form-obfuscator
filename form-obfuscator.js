@@ -1,4 +1,5 @@
 export class FormObfuscatorElement extends HTMLElement {
+	#boundEventProxy = null;
 	#fieldClones = new WeakMap();
 
 	static get observedAttributes() {
@@ -253,8 +254,11 @@ export class FormObfuscatorElement extends HTMLElement {
 	}
 
 	__addObservers() {
-		this.addEventListener('focus', this.__eventProxy.bind(this), true);
-		this.addEventListener('blur', this.__eventProxy.bind(this), true);
+		if (!this.#boundEventProxy) {
+			this.#boundEventProxy = this.__eventProxy.bind(this);
+		}
+		this.addEventListener('focus', this.#boundEventProxy, true);
+		this.addEventListener('blur', this.#boundEventProxy, true);
 	}
 
 	__init() {
