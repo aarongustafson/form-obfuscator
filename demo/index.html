@@ -5,22 +5,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>&lt;form-obfuscator&gt; Web Component Demo</title>
 		<link rel="stylesheet" href="./styles.css" />
-		<style>
-			/* Demo-specific styles */
-			output {
-				display: block;
-				background: ButtonFace;
-				padding: 1rem;
-				border-radius: 4px;
-				border: 1px solid ButtonBorder;
-				font-family: 'Courier New', Courier, monospace;
-				font-size: 0.875rem;
-				white-space: pre-wrap;
-				max-height: 300px;
-				overflow-y: auto;
-				margin-block: 1rem;
-			}
-		</style>
 	</head>
 	<body>
 		<header>
@@ -45,6 +29,18 @@
 		</header>
 
 		<main>
+			<p class="note">
+				Use fictional values only. Obfuscation is not encryption: values
+				remain available to scripts and form submission, and the event
+				example displays revealed values. If JavaScript or the module
+				fails, fields remain readable and editable without obfuscation.
+			</p>
+			<noscript>
+				<p>
+					JavaScript is off. Native fields still work, but values are
+					not obfuscated.
+				</p>
+			</noscript>
 			<section>
 				<h2>Basic Obfuscation</h2>
 				<p>
@@ -83,7 +79,7 @@
 			<section>
 				<h2>Custom Characters</h2>
 				<p>
-					Use the <code>characters</code> attribute to specify which
+					Use the <code>character</code> attribute to specify which
 					characters to use for obfuscation. Default is "*".
 				</p>
 

@@ -5,5 +5,6 @@ export default defineConfig({
 		environment: 'happy-dom',
 		globals: true,
 		setupFiles: ['./test/setup.js'],
+		exclude: ['node_modules/**', 'test/browser/**'],
 	},
 });

@@ -7,16 +7,73 @@
 		<link rel="stylesheet" href="./styles.css" />
 	</head>
 	<body>
-		<h1>esm.sh CDN sanity check</h1>
-		<p>
-			This page loads the component class from <code>esm.sh</code> and
-			registers it manually.
-		</p>
+		<header>
+			<h1><code>form-obfuscator</code> via esm.sh</h1>
+			<p>
+				Import the class and register it manually. See the
+				<a
+					href="https://github.com/aarongustafson/form-obfuscator/blob/main/README.md"
+					>README</a
+				>
+				for installation and API details.
+			</p>
+		</header>
+		<main>
+			<p class="note">
+				Use fictional values only. Obfuscation is not encryption: values
+				remain available to scripts and form submission. If JavaScript
+				or the CDN fails, the field stays readable and editable without
+				obfuscation.
+			</p>
+			<noscript>
+				<p>
+					JavaScript is off. The native field still works, but its
+					value is not obfuscated.
+				</p>
+			</noscript>
+			<section class="demo-section">
+				<h2>Manual registration</h2>
+				<p>
+					The class-only import does not register the element. Focus
+					the field to edit its value, then Tab away to obfuscate it.
+				</p>
+				<div class="code-demo-pair">
+					<pre><code>import { FormObfuscatorElement } from
+  '@aarongustafson/form-obfuscator/form-obfuscator.js';
+customElements.define('form-obfuscator', FormObfuscatorElement);
 
-		<form-obfuscator>
-			<label for="account-number">Account number</label>
-			<input id="account-number" name="account" value="1234-5678-9012" />
-		</form-obfuscator>
+<mark>&lt;form-obfuscator&gt;</mark>
+  &lt;label for="account-number"&gt;Account number&lt;/label&gt;
+  &lt;input id="account-number" name="account"
+    value="1234-5678-9012" /&gt;
+<mark>&lt;/form-obfuscator&gt;</mark></code></pre>
+					<div class="demo">
+						<form-obfuscator>
+							<label for="account-number">Account number</label>
+							<input
+								id="account-number"
+								name="account"
+								value="1234-5678-9012"
+							/>
+						</form-obfuscator>
+						<small
+							>Focus reveals the value; leaving the field
+							obfuscates it.</small
+						>
+					</div>
+				</div>
+			</section>
+		</main>
+		<footer>
+			<p>
+				Made with ❤️ by
+				<a href="https://github.com/aarongustafson">Aaron Gustafson</a>.
+				View the source on
+				<a href="https://github.com/aarongustafson/form-obfuscator"
+					>GitHub</a
+				>.
+			</p>
+		</footer>
 
 		<script type="module">
 			import { FormObfuscatorElement } from 'https://esm.sh/@aarongustafson/form-obfuscator@3.1.4/form-obfuscator.js?bundle&target=es2022';

@@ -6,9 +6,9 @@ There is no standard way to have a field's contents be readable while editing an
 
 ## Demos
 
-* [Live Demo](https://aarongustafson.github.io/form-obfuscator/demo/) ([Source](./demo/index.html))
-* [Unpkg CDN Demo](https://aarongustafson.github.io/form-obfuscator/demo/unpkg.html) ([Source](./demo/unpkg.html))
-* [ESM Demo](https://aarongustafson.github.io/form-obfuscator/demo/esm.html) ([Source](./demo/esm.html))
+- [Live Demo](https://aarongustafson.github.io/form-obfuscator/demo/) ([Source](./demo/index.html))
+- [Unpkg CDN Demo](https://aarongustafson.github.io/form-obfuscator/demo/unpkg.html) ([Source](./demo/unpkg.html))
+- [ESM Demo](https://aarongustafson.github.io/form-obfuscator/demo/esm.html) ([Source](./demo/esm.html))
 
 ## Installation
 
@@ -51,7 +51,10 @@ defineFormObfuscator();
 You can also include the guarded script from HTML:
 
 ```html
-<script src="./node_modules/@aarongustafson/form-obfuscator/define.js" type="module"></script>
+<script
+	src="./node_modules/@aarongustafson/form-obfuscator/define.js"
+	type="module"
+></script>
 ```
 
 ### CDN Usage
@@ -59,22 +62,25 @@ You can also include the guarded script from HTML:
 You can also use the component directly from a CDN:
 
 ```html
-<script src="https://unpkg.com/@aarongustafson/form-obfuscator@latest/define.js" type="module"></script>
+<script
+	src="https://unpkg.com/@aarongustafson/form-obfuscator@latest/define.js"
+	type="module"
+></script>
 ```
 
 ## API
 
-* `character` - The text character to replace each obfuscated character with. Default: *
-* `pattern` (optional) - Regular expression to manage replacement. Matched characters will be kept, all other characters will be replaced. If no match is found, the whole string will be replaced.
-* `replacer` (optional) - A custom replacement function that will be used to replace the value. Requires `pattern` be set as well. The obfuscated value will be a result of `value.replace( pattern, replacer )` where _value_ is the original field value, _pattern_ is a Regular Expression conversion of `pattern`, and _replacer_ is this function. All components of the replacer will need to be addressed via `arguments`.
-* `maxlength` (optional) - The maximum number of characters to display when obfuscating the text. This truncation is applied at the end of the replacement process.
+- `character` - The text character to replace each obfuscated character with. Default: *
+- `pattern` (optional) - Regular expression to manage replacement. Matched characters will be kept, all other characters will be replaced. If no match is found, the whole string will be replaced.
+- `replacer` (optional) - A custom replacement function that will be used to replace the value. Requires `pattern` be set as well. The obfuscated value will be a result of `value.replace( pattern, replacer )` where _value_ is the original field value, _pattern_ is a Regular Expression conversion of `pattern`, and _replacer_ is this function. All components of the replacer will need to be addressed via `arguments`.
+- `maxlength` (optional) - The maximum number of characters to display when obfuscating the text. This truncation is applied at the end of the replacement process.
 
 ## Events
 
 This element will emit two custom JavaScript events:
 
-* `form-obfuscator:hide` when a field is obfuscated
-* `form-obfuscator:reveal` when a field is obfuscated
+- `form-obfuscator:hide` when a field is obfuscated
+- `form-obfuscator:reveal` when a field is obfuscated
 
 On either event you can access the obfuscated field through the reference `event.detail.field` and the hidden field through the reference `event.detail.hidden`.
 
@@ -94,6 +100,38 @@ All field values will be duplicated into a hidden field, which is the field that
 	<input id="my-field" name="foo" />
 </form-obfuscator>
 ```
+
+## Demo styling and privacy
+
+The component adds no palette or focus styling. It keeps authored labels and
+native fields in the light DOM. Without JavaScript, or if an import fails,
+those fields remain readable and editable; values are not obfuscated.
+Obfuscation is not encryption. Actual values remain available to scripts and
+form submission. Use fictional values in the demos, especially the event log,
+which displays revealed values.
+
+Keep configuration trusted and valid. The component compiles `pattern` as a
+regular expression and `replacer` as JavaScript; don’t fill those attributes
+with untrusted content. A restrictive Content Security Policy may block custom
+replacers.
+
+The demos pair reading surfaces with `CanvasText`/`Canvas`, inline code,
+buttons, and event output with `ButtonText`/`ButtonFace`, code blocks and
+text fields with `FieldText`/`Field`, and marked passages with `MarkText`/`Mark`.
+Canvas underlays prevent transparent system surfaces from inheriting an
+unrelated background. Supporting text inherits its surface foreground;
+only Canvas-backed supporting text uses an 80% foreground mix. Forced colors,
+increased contrast, and browsers without `color-mix()` retain full-strength
+text. Button hover adds an underline and an optional 5% foreground wash without
+fading labels or boundaries. Native focus and automatic forced-color adjustment
+remain intact.
+
+If you change these styles, test foregrounds and backgrounds together,
+including inherited and transparent surfaces. System color names alone do not
+guarantee contrast. Tests cover recorded study palettes and browser behavior,
+not every operating-system theme or assistive technology. Bundled Ubuntu
+WebKit’s dark `ButtonText`/`ButtonFace` limitation is tracked separately;
+the tests do not reduce contrast thresholds.
 
 ## Browser Support
 
@@ -128,6 +166,9 @@ npm run test:ui
 
 # Run tests with coverage
 npm run test:coverage
+
+# Chromium, Firefox, and WebKit regressions (one worker)
+npm run test:browser
 ```
 
 ### Linting and Formatting

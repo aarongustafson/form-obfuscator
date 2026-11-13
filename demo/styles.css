@@ -6,29 +6,35 @@
    ========================================================================== */
 
 :root {
-  color-scheme: light dark;
+	color-scheme: light dark;
+}
+
+* {
+	box-sizing: border-box;
 }
 
 body {
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-		Oxygen, Ubuntu, Cantarell, sans-serif;
+	font-family:
+		-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+		Cantarell, sans-serif;
 	line-height: 1.6;
 	color: CanvasText;
 	background: Canvas;
 	max-width: 1400px;
 	margin: 0 auto;
 	padding: 1rem;
+	overflow-wrap: anywhere;
 }
 
 .visibly-hidden {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
 }
 
 /* Typography
@@ -56,7 +62,9 @@ p {
 }
 
 code {
-	background: ButtonFace;
+	background-color: Canvas;
+	background-image: linear-gradient(ButtonFace, ButtonFace);
+	color: ButtonText;
 	padding: 0.125rem 0.25rem;
 	border-radius: 3px;
 	font-family: 'Courier New', Courier, monospace;
@@ -66,17 +74,14 @@ code {
 /* Links
    ========================================================================== */
 
-a {
+a,
+a:active {
 	color: LinkText;
 	text-decoration-skip-ink: auto;
 }
 
 a:visited {
 	color: VisitedText;
-}
-
-a:active {
-	color: ActiveText;
 }
 
 a:hover {
@@ -90,15 +95,18 @@ header p {
 footer {
 	margin-block-start: 3rem;
 	padding-block-start: 2rem;
-	border-top: 2px solid ButtonBorder;
-	color: GrayText;
+	border-top: 2px solid CanvasText;
+	background: Canvas;
+	color: CanvasText;
+	color: color-mix(in srgb, CanvasText 80%, Canvas);
 	font-size: 0.9rem;
 }
 
 .demo-section {
 	margin-block: 2rem;
 	padding: 1.5rem;
-	background: ButtonFace;
+	background: Canvas;
+	color: CanvasText;
 	border-radius: 8px;
 	border: 1px solid ButtonBorder;
 }
@@ -112,25 +120,20 @@ footer {
    ========================================================================== */
 
 .code-demo-pair {
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
 	gap: 1rem;
 	margin-block: 1rem;
 }
 
+.code-demo-pair > * {
+	min-inline-size: 0;
+}
+
 @media (min-width: 768px) {
 	.code-demo-pair {
-		flex-direction: row;
-		align-items: flex-start;
-	}
-
-	.code-demo-pair > pre {
-		flex: 1;
-		margin: 0;
-	}
-
-	.code-demo-pair > .demo {
-		flex: 1;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		align-items: start;
 	}
 }
 
@@ -138,7 +141,8 @@ footer {
    ========================================================================== */
 
 pre {
-	background: Field;
+	background-color: Canvas;
+	background-image: linear-gradient(Field, Field);
 	color: FieldText;
 	padding: 1rem;
 	border-radius: 6px;
@@ -168,9 +172,10 @@ pre code mark {
 
 .demo {
 	background: Canvas;
+	color: CanvasText;
 	padding: 1rem;
 	border-radius: 6px;
-	border: 1px solid ButtonBorder;
+	border: 1px solid CanvasText;
 }
 
 /* Form Elements
@@ -206,17 +211,27 @@ fieldset > label {
 	min-height: 23px;
 }
 
-:focus-visible {
-	outline: 2px solid AccentColor;
-	outline-offset: 2px;
-	border-color: AccentColor;
+form-obfuscator {
+	display: block;
+}
+
+input:not([type='hidden']) {
+	max-inline-size: 100%;
+	min-inline-size: 0;
+	font: inherit;
+	background-color: Canvas;
+	background-image: linear-gradient(Field, Field);
+	color: FieldText;
+	border: 1px solid currentColor;
+	padding: 0.25rem;
 }
 
 button[type='submit'],
 button[type='reset'] {
-	background: ButtonFace;
+	background-color: Canvas;
+	background-image: linear-gradient(ButtonFace, ButtonFace);
 	color: ButtonText;
-	border: 1px solid ButtonBorder;
+	border: 1px solid currentColor;
 	padding: 0.75rem 1.5rem;
 	border-radius: 4px;
 	font-size: 1rem;
@@ -228,7 +243,11 @@ button[type='reset'] {
 
 button[type='submit']:hover,
 button[type='reset']:hover {
-	opacity: 0.8;
+	background-image: linear-gradient(
+		color-mix(in srgb, ButtonFace 95%, ButtonText),
+		color-mix(in srgb, ButtonFace 95%, ButtonText)
+	);
+	text-decoration: underline;
 }
 
 small {
@@ -236,7 +255,12 @@ small {
 	font-style: italic;
 	font-weight: normal;
 	margin-block: 0.5rem 1rem;
-	color: GrayText;
+	color: inherit;
+}
+
+:is(body, header, main, .demo-section, .demo, .api-reference) > small {
+	color: CanvasText;
+	color: color-mix(in srgb, CanvasText 80%, Canvas);
 }
 
 /* Radio/Checkbox "Other" Pattern
@@ -268,7 +292,7 @@ small {
 .note {
 	background: Mark;
 	color: MarkText;
-	border-left: 4px solid AccentColor;
+	border-left: 4px solid currentColor;
 	padding: 1rem;
 	margin-block: 1rem;
 	border-radius: 4px;
@@ -276,6 +300,11 @@ small {
 
 .note code {
 	background: transparent;
+	color: inherit;
+}
+
+.note a,
+.api-reference a {
 	color: inherit;
 }
 
@@ -288,9 +317,9 @@ small {
    ========================================================================== */
 
 .api-reference {
-	background: SelectedItem;
-	color: SelectedItemText;
-	border-left: 4px solid AccentColor;
+	background: Canvas;
+	color: CanvasText;
+	border-left: 4px solid currentColor;
 	padding: 1rem;
 	margin-block: 2rem;
 	border-radius: 4px;
@@ -300,15 +329,40 @@ small {
 	margin: 0;
 }
 
-.api-reference a {
-  color: inherit;
+output {
+	display: block;
+	background-color: Canvas;
+	background-image: linear-gradient(ButtonFace, ButtonFace);
+	color: ButtonText;
+	padding: 1rem;
+	border-radius: 4px;
+	border: 1px solid currentColor;
+	font-family: ui-monospace, monospace;
+	font-size: 0.875rem;
+	white-space: pre-wrap;
+	max-height: 300px;
+	overflow-y: auto;
+	margin-block: 1rem;
 }
 
-@media (forced-colors: active) {
-	pre code mark,
-	.note,
-	.api-reference {
-		background: Highlight;
-		color: HighlightText;
+@media (max-width: 600px) {
+	body,
+	.demo-section,
+	.demo,
+	.api-reference,
+	pre {
+		padding: 0.5rem;
+	}
+}
+
+@media (forced-colors: active), (prefers-contrast: more) {
+	footer,
+	:is(body, header, main, .demo-section, .demo, .api-reference) > small {
+		color: CanvasText;
+	}
+
+	button[type='submit']:hover,
+	button[type='reset']:hover {
+		background-image: linear-gradient(ButtonFace, ButtonFace);
 	}
 }
