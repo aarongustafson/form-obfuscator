@@ -580,18 +580,18 @@
     );
   
   obfuscator.addEventListener(
-    'form-obfuscator:hide',
+    <mark>'form-obfuscator:hide'</mark>,
     (e) =&gt; {
       console.log('Obfuscated:', 
-        e.detail.field.value);
+        <mark>e.detail.field.value</mark>);
     }
   );
   
   obfuscator.addEventListener(
-    'form-obfuscator:reveal',
+    <mark>'form-obfuscator:reveal'</mark>,
     (e) =&gt; {
       console.log('Revealed:', 
-        e.detail.field.value);
+        <mark>e.detail.field.value</mark>);
     }
   );
 &lt;/script&gt;
