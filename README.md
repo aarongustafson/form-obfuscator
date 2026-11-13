@@ -1,6 +1,10 @@
 # Form Field Obfuscation Web Component
 
-[![npm version](https://img.shields.io/npm/v/@aarongustafson/form-obfuscator.svg)](https://www.npmjs.com/package/@aarongustafson/form-obfuscator) [![Build Status](https://img.shields.io/github/actions/workflow/status/aarongustafson/form-obfuscator/ci.yml?branch=main)](https://github.com/aarongustafson/form-obfuscator/actions)
+[![npm version](https://img.shields.io/npm/v/@aarongustafson/form-obfuscator.svg)](https://www.npmjs.com/package/@aarongustafson/form-obfuscator)
+[![CI status](https://img.shields.io/github/actions/workflow/status/aarongustafson/form-obfuscator/ci.yml?branch=main&label=CI)](https://github.com/aarongustafson/form-obfuscator/actions/workflows/ci.yml)
+[![Minified + gzipped size](https://img.shields.io/bundlejs/size/@aarongustafson/form-obfuscator?format=minzip&label=min%2Bgzip)](https://bundlejs.com/?q=@aarongustafson/form-obfuscator)
+[![License](https://img.shields.io/npm/l/@aarongustafson/form-obfuscator)](https://github.com/aarongustafson/form-obfuscator/blob/main/LICENSE)
+[![Type definitions](https://img.shields.io/npm/types/@aarongustafson/form-obfuscator)](https://github.com/aarongustafson/form-obfuscator/blob/main/form-obfuscator.d.ts)
 
 There is no standard way to have a field's contents be readable while editing and obfuscated while at rest. The closest we get is the ["password reveal" pattern](https://github.com/sunnywalker/show-password-toggle), but that isn't as customizable for regular fields. The `form-obfuscator` web component enables that.
 
