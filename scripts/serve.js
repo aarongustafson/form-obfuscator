@@ -52,7 +52,7 @@ createServer(async (request, response) => {
 	} catch (error) {
 		response
 			.writeHead(
-				error instanceof URIError
+				error instanceof URIError || error.code === 'ERR_INVALID_URL'
 					? 400
 					: ['ENOENT', 'ENOTDIR'].includes(error.code)
 						? 404

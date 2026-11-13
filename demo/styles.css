@@ -366,3 +366,21 @@ output {
 		background-image: linear-gradient(ButtonFace, ButtonFace);
 	}
 }
+
+@media (forced-colors: active) {
+	code,
+	output,
+	button[type='submit'],
+	button[type='reset'],
+	button[type='submit']:hover,
+	button[type='reset']:hover {
+		background-color: ButtonFace;
+		background-image: none;
+	}
+
+	pre,
+	input:not([type='hidden']) {
+		background-color: Field;
+		background-image: none;
+	}
+}

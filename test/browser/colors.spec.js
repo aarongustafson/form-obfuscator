@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises';
+import { get } from 'node:http';
 import { test, expect } from '@playwright/test';
 
 const read = (path) =>
@@ -7,6 +8,9 @@ const source = await read('form-obfuscator.js');
 const definition = await read('define.js');
 const css = await read('demo/styles.css');
 const pages = ['index', 'esm', 'unpkg'];
+const fieldMarkSurfaces =
+	'pre, pre code, mark, input:not([type="hidden"]), .note, .note code';
+const buttonSurfaces = 'code:not(pre code):not(.note code), button, output';
 const tokens = [
 	'Canvas',
 	'CanvasText',
@@ -152,6 +156,25 @@ async function measurements(locator) {
 	return (await measureAll(locator))[0];
 }
 
+async function assertTextContrast(locator) {
+	const values = await measureAll(locator);
+	expect(values.length).toBeGreaterThan(0);
+	for (const value of values)
+		expect(value.text, `${value.tag} text contrast`).toBeGreaterThanOrEqual(
+			4.5,
+		);
+	return values;
+}
+
+function rawStatus(path) {
+	return new Promise((resolve, reject) => {
+		get({ hostname: '127.0.0.1', port: 4189, path }, (response) => {
+			response.resume();
+			response.on('end', () => resolve(response.statusCode));
+		}).on('error', reject);
+	});
+}
+
 test('palette replacement handles normalized CSSOM keyword casing', async ({
 	page,
 }) => {
@@ -211,26 +234,42 @@ for (const name of pages) {
 			expect(await field.getAttribute('id')).toBeTruthy();
 		});
 
-		test(`${name} ${colorScheme}: native control and code pairs`, async ({
+		test(`${name} ${colorScheme}: Field/Mark text contrast`, async ({
+			page,
+		}) => {
+			await page.emulateMedia({ colorScheme });
+			await demo(page, name);
+			const values = await assertTextContrast(
+				page.locator(fieldMarkSurfaces),
+			);
+			for (const tag of ['PRE', 'MARK', 'INPUT'])
+				expect(
+					values.some((value) => value.tag === tag),
+					tag,
+				).toBe(true);
+		});
+
+		test(`${name} ${colorScheme}: ButtonText/ButtonFace text contrast`, async ({
 			page,
 			browserName,
 		}) => {
+			await page.emulateMedia({ colorScheme });
+			await demo(page, name);
+			const values = await measureAll(page.locator(buttonSurfaces));
+			expect(values.length).toBeGreaterThan(0);
 			test.fail(
 				process.platform === 'linux' &&
 					browserName === 'webkit' &&
 					colorScheme === 'dark',
 				'Bundled Ubuntu WebKit native dark ButtonText/ButtonFace is 1.82:1.',
 			);
-			await page.emulateMedia({ colorScheme });
-			await demo(page, name);
-			for (const element of await page
-				.locator(
-					'code, pre, mark, input:not([type="hidden"]), button, output',
-				)
-				.all())
-				expect(
-					(await measurements(element)).text,
-				).toBeGreaterThanOrEqual(4.5);
+			for (const value of values)
+				expect
+					.soft(
+						value.text,
+						`${value.tag} ButtonText/ButtonFace text contrast`,
+					)
+					.toBeGreaterThanOrEqual(4.5);
 		});
 	}
 
@@ -345,6 +384,33 @@ for (const name of pages) {
 		expect(
 			await block.evaluate((pre) => getComputedStyle(pre).outlineStyle),
 		).not.toBe('none');
+	});
+}
+
+for (const colorScheme of ['light', 'dark']) {
+	test(`${colorScheme}: Field/Mark negative controls reject their own contrast regressions`, async ({
+		page,
+	}) => {
+		await page.emulateMedia({ colorScheme });
+		await demo(page);
+		await assertTextContrast(page.locator(fieldMarkSurfaces));
+		for (const [selector, tag] of [
+			['input:not([type="hidden"])', 'INPUT'],
+			['pre, pre code', 'PRE'],
+			['mark', 'MARK'],
+		]) {
+			const style = await page.addStyleTag({
+				content: `${selector} { color: #fff !important; background: #fff !important; }`,
+			});
+			try {
+				await expect(
+					assertTextContrast(page.locator(fieldMarkSurfaces)),
+				).rejects.toThrow(`${tag} text contrast`);
+			} finally {
+				await style.evaluate((style) => style.remove());
+			}
+			await assertTextContrast(page.locator(fieldMarkSurfaces));
+		}
 	});
 }
 
@@ -466,4 +532,94 @@ test('fixture is no-cache, read-only, and does not expose dotfiles or dependenci
 		(await request.get('/node_modules/vitest/package.json')).status(),
 	).toBe(403);
 	expect((await request.post('/demo/index.html')).status()).toBe(405);
+});
+
+test('malformed raw fixture URLs return 400 and leave the next request usable', async ({
+	request,
+}) => {
+	for (const path of ['//[', '/%']) {
+		expect(await rawStatus(path), path).toBe(400);
+		expect((await request.get('/demo/index.html')).status()).toBe(200);
+	}
+});
+
+test('forced-color author rules keep solid pairs when gradients are suppressed', async ({
+	page,
+}) => {
+	// Exercise the author media branch with a recorded palette, independently
+	// of OS repainting. Suppress gradients as forced-color browsers do.
+	const palette = palettes[15];
+	const forced = (styles) =>
+		substitute(styles, palette).replaceAll(
+			'(forced-colors: active)',
+			'(min-width: 0px)',
+		);
+	await page.emulateMedia({
+		forcedColors: 'none',
+		contrast: 'no-preference',
+	});
+	await demo(page);
+	await page.addStyleTag({ content: forced(css) });
+	await page.addStyleTag({
+		content:
+			'code, pre, input, button, output { background-image: none !important; }',
+	});
+	for (const [selector, color] of [
+		['header code', 'rgb(192, 192, 192)'],
+		['pre', 'rgb(255, 255, 255)'],
+		['input:not([type="hidden"])', 'rgb(255, 255, 255)'],
+		['button', 'rgb(192, 192, 192)'],
+		['output', 'rgb(192, 192, 192)'],
+	]) {
+		const element = page.locator(selector).first();
+		expect
+			.soft(
+				await element.evaluate(
+					(element) => getComputedStyle(element).backgroundColor,
+				),
+				selector,
+			)
+			.toBe(color);
+		expect
+			.soft((await measurements(element)).text, selector)
+			.toBeGreaterThanOrEqual(4.5);
+	}
+	await expect(page.locator('pre code').first()).toHaveCSS(
+		'background-color',
+		'rgba(0, 0, 0, 0)',
+	);
+	const button = page.locator('button').first();
+	await button.hover();
+	await expect(button).toHaveCSS('background-image', 'none');
+	await expect(button).toHaveCSS('background-color', 'rgb(192, 192, 192)');
+	await page
+		.locator('.note')
+		.first()
+		.evaluate((note) => {
+			const code = document.createElement('code');
+			code.textContent = 'Note code';
+			note.append(code);
+		});
+	const noteCode = page.locator('.note code').first();
+	await expect(noteCode).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+	expect((await measurements(noteCode)).text).toBeGreaterThanOrEqual(4.5);
+
+	const workflow = await read('.github/workflows/pages.yml');
+	const baseline = workflow.match(/<style>(.+)<\/style>/)[1];
+	await page.setContent(
+		`<style>${forced(baseline)} code,pre{background-image:none!important}</style><code>Inline</code><pre><code>Block</code></pre>`,
+	);
+	for (const selector of ['body > code', 'pre']) {
+		await expect(page.locator(selector)).toHaveCSS(
+			'background-color',
+			'rgb(192, 192, 192)',
+		);
+		expect(
+			(await measurements(page.locator(selector))).text,
+		).toBeGreaterThanOrEqual(4.5);
+	}
+	await expect(page.locator('pre code')).toHaveCSS(
+		'background-color',
+		'rgba(0, 0, 0, 0)',
+	);
 });

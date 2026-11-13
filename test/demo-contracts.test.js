@@ -1,6 +1,6 @@
-import { readFile } from 'node:fs/promises';
+import { mkdir, readFile, rm } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { expect, it } from 'vitest';
 
 const read = (path) => readFile(resolve(path), 'utf8');
@@ -63,4 +63,67 @@ it('retains the version helper without bumping, staging, tagging, or pushing', a
 	expect(publish).toContain('npm publish --provenance --access public');
 	expect(publish).toContain('npm publish --dry-run --access public');
 	expect(publish).toContain('test "$GITHUB_REF_NAME" = "$expected_tag"');
+});
+
+for (const failing of [false, true]) {
+	it(`README conversion ${failing ? 'failure stops deployment' : 'success preserves focusable code and proceeds'}`, async () => {
+		const workflow = await read('.github/workflows/pages.yml');
+		const conversion = workflow
+			.split('              run: |\n')[1]
+			.split('\n\n')[0]
+			.replace(/^ {18}/gm, '')
+			.replaceAll(
+				'${{ github.event.repository.name }}',
+				'form-obfuscator',
+			);
+		const fixture = resolve(
+			`coverage/pages-conversion-${process.pid}-${failing}`,
+		);
+		await mkdir(fixture, { recursive: true });
+		try {
+			const converter = failing
+				? "npx() { printf '%s\\n' '<pre>Partial conversion</pre>'; return 47; }\n"
+				: "npx() { printf '%s\\n' '<pre><code>Example</code></pre>'; }\n";
+			const result = spawnSync(
+				'bash',
+				[
+					'-e',
+					'-c',
+					`${converter}${conversion}\nprintf deployed > deployment-reached`,
+				],
+				{ cwd: fixture, encoding: 'utf8' },
+			);
+			expect(result.error).toBeUndefined();
+			expect(result.status).toBe(failing ? 47 : 0);
+			const html = await readFile(resolve(fixture, 'index.html'), 'utf8');
+			if (failing) {
+				expect(html).not.toContain('</body></html>');
+				await expect(
+					readFile(resolve(fixture, 'deployment-reached')),
+				).rejects.toMatchObject({ code: 'ENOENT' });
+			} else {
+				expect(html).toContain(
+					'<pre tabindex="0"><code>Example</code></pre>',
+				);
+				expect(
+					await readFile(
+						resolve(fixture, 'deployment-reached'),
+						'utf8',
+					),
+				).toBe('deployed');
+			}
+		} finally {
+			await rm(fixture, { recursive: true, force: true });
+		}
+	});
+}
+
+it('keeps Field/Mark assertions outside the native-button expected failure', async () => {
+	const browserTests = await read('test/browser/colors.spec.js');
+	const normalTest = browserTests.match(
+		/test\(`\$\{name\} \$\{colorScheme\}: Field\/Mark text contrast`,([\s\S]*?)\n\t\t}\);/,
+	);
+	expect(normalTest).not.toBeNull();
+	expect(normalTest[1]).not.toContain('test.fail');
+	expect(normalTest[1]).toContain('assertTextContrast');
 });

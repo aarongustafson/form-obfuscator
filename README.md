@@ -118,8 +118,11 @@ replacers.
 The demos pair reading surfaces with `CanvasText`/`Canvas`, inline code,
 buttons, and event output with `ButtonText`/`ButtonFace`, code blocks and
 text fields with `FieldText`/`Field`, and marked passages with `MarkText`/`Mark`.
-Canvas underlays prevent transparent system surfaces from inheriting an
-unrelated background. Supporting text inherits its surface foreground;
+In ordinary color modes, Canvas underlays prevent transparent system surfaces
+from inheriting an unrelated background. Forced colors use solid `Field` or
+`ButtonFace` backplates instead, so gradient suppression does not separate
+foregrounds from their intended surfaces. Supporting text inherits its surface
+foreground;
 only Canvas-backed supporting text uses an 80% foreground mix. Forced colors,
 increased contrast, and browsers without `color-mix()` retain full-strength
 text. Button hover adds an underline and an optional 5% foreground wash without
@@ -135,7 +138,10 @@ including inherited and transparent surfaces. System color names alone do not
 guarantee contrast. Tests cover recorded study palettes and browser behavior,
 not every operating-system theme or assistive technology. Bundled Ubuntu
 WebKit’s dark `ButtonText`/`ButtonFace` limitation is tracked separately;
-the tests do not reduce contrast thresholds.
+only those surface assertions use an expected-failure annotation. Field and
+marked-text assertions run normally, with negative controls that verify they
+reject their own contrast regressions. The tests do not reduce contrast
+thresholds.
 
 ## Browser Support
 
