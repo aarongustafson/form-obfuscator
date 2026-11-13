@@ -32,7 +32,7 @@ jobs:
                   echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>' > index.html
                   echo "${{ github.event.repository.name }}" >> index.html
                   echo '</title><style>:root{color-scheme:light dark;}body{color:CanvasText;background:Canvas;max-width:800px;margin:2rem auto;padding:0 1rem;font-family:system-ui,-apple-system,sans-serif;line-height:1.6;overflow-wrap:anywhere}code{background-color:Canvas;background-image:linear-gradient(ButtonFace,ButtonFace);color:ButtonText;padding:2px 6px;border-radius:3px}a,a:active{color:LinkText}a:visited{color:VisitedText}pre{background-color:Canvas;background-image:linear-gradient(ButtonFace,ButtonFace);color:ButtonText;padding:1rem;border-radius:5px;overflow-x:auto}pre code{background:none;color:inherit;padding:0}</style></head><body>' >> index.html
-                  npx marked README.md >> index.html
+                  npx marked README.md | sed 's/<pre>/<pre tabindex="0">/g' >> index.html
                   echo '</body></html>' >> index.html
 
             - name: Setup Pages

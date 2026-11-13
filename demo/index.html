@@ -52,7 +52,9 @@
 				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre><code><mark>&lt;form-obfuscator&gt;</mark>
+							<pre
+								tabindex="0"
+							><code><mark>&lt;form-obfuscator&gt;</mark>
   &lt;label for="basic-example"&gt;
     Password
   &lt;/label&gt;
@@ -86,7 +88,9 @@
 				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre><code><mark>&lt;form-obfuscator character="•"&gt;</mark>
+							<pre
+								tabindex="0"
+							><code><mark>&lt;form-obfuscator character="•"&gt;</mark>
   &lt;label for="bullet-example"&gt;
     Bullet Obfuscation
   &lt;/label&gt;
@@ -134,7 +138,9 @@
 				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre><code><mark>&lt;form-obfuscator pattern="\d{4}$"&gt;</mark>
+							<pre
+								tabindex="0"
+							><code><mark>&lt;form-obfuscator pattern="\d{4}$"&gt;</mark>
   &lt;label for="ssn-example"&gt;
     SSN (shows last 4 digits)
   &lt;/label&gt;
@@ -197,7 +203,9 @@
 				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre><code><mark>&lt;form-obfuscator maxlength="4"&gt;</mark>
+							<pre
+								tabindex="0"
+							><code><mark>&lt;form-obfuscator maxlength="4"&gt;</mark>
   &lt;label for="max-example"&gt;
     Long Value (max 4 chars shown)
   &lt;/label&gt;
@@ -239,7 +247,7 @@
 				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre><code>&lt;script&gt;
+							<pre tabindex="0"><code>&lt;script&gt;
   window.customReplacer = (match) =&gt; {
     return match.split('').map((char, i) =&gt;
       i % 2 === 0 ? char : '▪'
@@ -304,7 +312,7 @@
 					<h3>Credit Card with Custom Replacer</h3>
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre><code>&lt;script&gt;
+							<pre tabindex="0"><code>&lt;script&gt;
   function cardNumberReplacer() {
     var beginning = arguments[0][1];
     var final_digits = arguments[0][2];
@@ -359,7 +367,7 @@
 					<h3>Email with Custom Replacer</h3>
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre><code>&lt;script&gt;
+							<pre tabindex="0"><code>&lt;script&gt;
   function emailReplacer() {
     var username = arguments[0][1];
     var domain = arguments[0][2];
@@ -413,7 +421,7 @@
 					<h3>Pattern + Character + Maxlength</h3>
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre><code><mark>&lt;form-obfuscator
+							<pre tabindex="0"><code><mark>&lt;form-obfuscator
   pattern="\d{4}$"
   character="•"
   maxlength="16"&gt;</mark>
@@ -462,7 +470,7 @@
 				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre><code>&lt;form&gt;
+							<pre tabindex="0"><code>&lt;form&gt;
   <mark>&lt;form-obfuscator&gt;</mark>
     &lt;label for="account-pwd"&gt;
       Password
@@ -565,7 +573,7 @@
 				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre><code>&lt;script&gt;
+							<pre tabindex="0"><code>&lt;script&gt;
   const obfuscator = 
     document.querySelector(
       'form-obfuscator'

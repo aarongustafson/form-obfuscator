@@ -22,6 +22,7 @@ it('provides paired examples, fallback guidance, and credits on every import pag
 		expect(html).toContain('class="demo"');
 		expect(html).toContain('<footer>');
 		expect(html).toContain('<noscript>');
+		expect(html).not.toMatch(/<pre>/);
 		expect(html).toContain('not encryption');
 		expect(html).toContain(
 			'https://github.com/aarongustafson/form-obfuscator/blob/main/README.md',
@@ -51,6 +52,7 @@ it('pairs the generated README page and retains native link colors', async () =>
 	expect(workflow).toContain('color:CanvasText;background:Canvas');
 	expect(workflow).toContain('color:LinkText');
 	expect(workflow).not.toContain('hotpink');
+	expect(workflow).toContain('sed \'s/<pre>/<pre tabindex="0">/g\'');
 });
 
 it('retains the version helper without bumping, staging, tagging, or pushing', async () => {

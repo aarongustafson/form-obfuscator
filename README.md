@@ -126,6 +126,10 @@ text. Button hover adds an underline and an optional 5% foreground wash without
 fading labels or boundaries. Native focus and automatic forced-color adjustment
 remain intact.
 
+On narrow screens or with enlarged text, examples stack and code blocks scroll
+within their column. Tab to a code block and use the arrow keys to scroll it;
+the browser supplies its focus indicator.
+
 If you change these styles, test foregrounds and backgrounds together,
 including inherited and transparent surfaces. System color names alone do not
 guarantee contrast. Tests cover recorded study palettes and browser behavior,

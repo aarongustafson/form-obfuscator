@@ -333,6 +333,18 @@ for (const name of pages) {
 			const second = await pair.locator('> .demo').boundingBox();
 			expect(first.y + first.height).toBeLessThanOrEqual(second.y);
 		}
+		const block = pair.locator('pre');
+		await block.focus();
+		await expect(block).toBeFocused();
+		await expect
+			.poll(async () => {
+				await page.keyboard.press('ArrowRight');
+				return block.evaluate((pre) => pre.scrollLeft);
+			})
+			.toBeGreaterThan(0);
+		expect(
+			await block.evaluate((pre) => getComputedStyle(pre).outlineStyle),
+		).not.toBe('none');
 	});
 }
 
