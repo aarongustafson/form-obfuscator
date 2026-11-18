@@ -4,14 +4,19 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>&lt;form-obfuscator&gt; Web Component Demo</title>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/microlighter@2.2.0/dist/themes/github.css"
+		/>
 		<link rel="stylesheet" href="./styles.css" />
+		<link rel="stylesheet" href="./demo-shell.css" />
 	</head>
-	<body>
+	<body data-syntax-theme="github">
+		<a class="skip-link" href="#main">Skip to examples</a>
 		<header>
-			<h1>
-				Form Obfuscator Web Component (<code>form-obfuscator</code>)
-			</h1>
-			<p>
+			<p class="eyebrow">Web component / Examples</p>
+			<h1>&lt;form-obfuscator&gt;</h1>
+			<p class="lede">
 				A web component that obfuscates form field values when they
 				don't have focus, while keeping the actual values readable while
 				editing. See the
@@ -26,9 +31,27 @@
 				focused and become obfuscated when the field loses focus. The
 				actual value is stored in a hidden field for form submission.
 			</p>
+			<nav aria-label="Component resources">
+				<a
+					href="https://github.com/aarongustafson/form-obfuscator/blob/main/README.md"
+					>Read the README</a
+				>
+				<a href="https://github.com/aarongustafson/form-obfuscator"
+					>View on GitHub</a
+				>
+				<a href="./esm.html">esm.sh example</a>
+				<a href="./unpkg.html">unpkg example</a>
+			</nav>
 		</header>
 
-		<main>
+		<main id="main" tabindex="-1">
+			<p
+				id="microlighter-status"
+				class="enhancement-status"
+				role="status"
+				hidden
+			></p>
+
 			<p class="note">
 				Use fictional values only. Obfuscation is not encryption: values
 				remain available to scripts and form submission, and the event
@@ -52,9 +75,16 @@
 				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre
-								tabindex="0"
-							><code><mark>&lt;form-obfuscator&gt;</mark>
+							<micro-lighter
+								class="code-panel"
+								language="html"
+								controls="copy"
+								data-label="HTML"
+							>
+								<pre
+									aria-label="Example code 1"
+									tabindex="0"
+								><code><mark>&lt;form-obfuscator&gt;</mark>
   &lt;label for="basic-example"&gt;
     Password
   &lt;/label&gt;
@@ -63,6 +93,7 @@
     id="basic-example"
   /&gt;
 <mark>&lt;/form-obfuscator&gt;</mark></code></pre>
+							</micro-lighter>
 						</div>
 						<div class="demo">
 							<form-obfuscator>
@@ -88,9 +119,16 @@
 				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre
-								tabindex="0"
-							><code><mark>&lt;form-obfuscator character="•"&gt;</mark>
+							<micro-lighter
+								class="code-panel"
+								language="html"
+								controls="copy"
+								data-label="HTML"
+							>
+								<pre
+									aria-label="Example code 2"
+									tabindex="0"
+								><code><mark>&lt;form-obfuscator character="•"&gt;</mark>
   &lt;label for="bullet-example"&gt;
     Bullet Obfuscation
   &lt;/label&gt;
@@ -109,6 +147,7 @@
     id="x-example"
   /&gt;
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
+							</micro-lighter>
 						</div>
 						<div class="demo">
 							<form-obfuscator character="•">
@@ -138,9 +177,16 @@
 				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre
-								tabindex="0"
-							><code><mark>&lt;form-obfuscator pattern="\d{4}$"&gt;</mark>
+							<micro-lighter
+								class="code-panel"
+								language="html"
+								controls="copy"
+								data-label="HTML"
+							>
+								<pre
+									aria-label="Example code 3"
+									tabindex="0"
+								><code><mark>&lt;form-obfuscator pattern="\d{4}$"&gt;</mark>
   &lt;label for="ssn-example"&gt;
     SSN (shows last 4 digits)
   &lt;/label&gt;
@@ -161,6 +207,7 @@
     placeholder="(555) 123-4567"
   /&gt;
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
+							</micro-lighter>
 						</div>
 						<div class="demo">
 							<form-obfuscator pattern="\d{4}$">
@@ -203,9 +250,16 @@
 				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre
-								tabindex="0"
-							><code><mark>&lt;form-obfuscator maxlength="4"&gt;</mark>
+							<micro-lighter
+								class="code-panel"
+								language="html"
+								controls="copy"
+								data-label="HTML"
+							>
+								<pre
+									aria-label="Example code 4"
+									tabindex="0"
+								><code><mark>&lt;form-obfuscator maxlength="4"&gt;</mark>
   &lt;label for="max-example"&gt;
     Long Value (max 4 chars shown)
   &lt;/label&gt;
@@ -215,6 +269,7 @@
     value="ThisIsAVeryLongPassword123"
   /&gt;
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
+							</micro-lighter>
 						</div>
 						<div class="demo">
 							<form-obfuscator maxlength="4">
@@ -247,7 +302,16 @@
 				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre tabindex="0"><code>&lt;script&gt;
+							<micro-lighter
+								class="code-panel"
+								language="html"
+								controls="copy"
+								data-label="HTML"
+							>
+								<pre
+									aria-label="Example code 5"
+									tabindex="0"
+								><code>&lt;script&gt;
   window.customReplacer = (match) =&gt; {
     return match.split('').map((char, i) =&gt;
       i % 2 === 0 ? char : '▪'
@@ -267,6 +331,7 @@
     value="HelloWorld"
   /&gt;
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
+							</micro-lighter>
 						</div>
 						<div class="demo">
 							<script>
@@ -312,7 +377,16 @@
 					<h3>Credit Card with Custom Replacer</h3>
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre tabindex="0"><code>&lt;script&gt;
+							<micro-lighter
+								class="code-panel"
+								language="html"
+								controls="copy"
+								data-label="HTML"
+							>
+								<pre
+									aria-label="Credit Card with Custom Replacer code 6"
+									tabindex="0"
+								><code>&lt;script&gt;
   function cardNumberReplacer() {
     var beginning = arguments[0][1];
     var final_digits = arguments[0][2];
@@ -333,6 +407,7 @@
     value="1234-5678-9012-3456"
   /&gt;
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
+							</micro-lighter>
 						</div>
 						<div class="demo">
 							<script>
@@ -367,7 +442,16 @@
 					<h3>Email with Custom Replacer</h3>
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre tabindex="0"><code>&lt;script&gt;
+							<micro-lighter
+								class="code-panel"
+								language="html"
+								controls="copy"
+								data-label="HTML"
+							>
+								<pre
+									aria-label="Credit Card with Custom Replacer code 7"
+									tabindex="0"
+								><code>&lt;script&gt;
   function emailReplacer() {
     var username = arguments[0][1];
     var domain = arguments[0][2];
@@ -388,6 +472,7 @@
     value="user@example.com"
   /&gt;
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
+							</micro-lighter>
 						</div>
 						<div class="demo">
 							<script>
@@ -421,7 +506,16 @@
 					<h3>Pattern + Character + Maxlength</h3>
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre tabindex="0"><code><mark>&lt;form-obfuscator
+							<micro-lighter
+								class="code-panel"
+								language="html"
+								controls="copy"
+								data-label="HTML"
+							>
+								<pre
+									aria-label="Credit Card with Custom Replacer code 8"
+									tabindex="0"
+								><code><mark>&lt;form-obfuscator
   pattern="\d{4}$"
   character="•"
   maxlength="16"&gt;</mark>
@@ -434,6 +528,7 @@
     placeholder="1234-5678-9012-3456"
   /&gt;
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
+							</micro-lighter>
 						</div>
 						<div class="demo">
 							<form-obfuscator
@@ -470,7 +565,16 @@
 				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre tabindex="0"><code>&lt;form&gt;
+							<micro-lighter
+								class="code-panel"
+								language="html"
+								controls="copy"
+								data-label="HTML"
+							>
+								<pre
+									aria-label="Example code 9"
+									tabindex="0"
+								><code>&lt;form&gt;
   <mark>&lt;form-obfuscator&gt;</mark>
     &lt;label for="account-pwd"&gt;
       Password
@@ -513,6 +617,7 @@
     Submit
   &lt;/button&gt;
 &lt;/form&gt;</code></pre>
+							</micro-lighter>
 						</div>
 						<div class="demo">
 							<form id="real-world-form">
@@ -573,7 +678,16 @@
 				<div class="demo-section">
 					<div class="code-demo-pair">
 						<div class="code">
-							<pre tabindex="0"><code>&lt;script&gt;
+							<micro-lighter
+								class="code-panel"
+								language="html"
+								controls="copy"
+								data-label="HTML"
+							>
+								<pre
+									aria-label="Example code 10"
+									tabindex="0"
+								><code>&lt;script&gt;
   const obfuscator = 
     document.querySelector(
       'form-obfuscator'
@@ -605,6 +719,7 @@
     id="event-example"
   /&gt;
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
+							</micro-lighter>
 						</div>
 						<div class="demo">
 							<form-obfuscator id="event-obfuscator">
@@ -690,5 +805,6 @@
 		</footer>
 
 		<script type="module" src="../define.js"></script>
+		<script type="module" src="./code-examples.js"></script>
 	</body>
 </html>

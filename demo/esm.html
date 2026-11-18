@@ -4,12 +4,19 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>form-obfuscator via esm.sh</title>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/microlighter@2.2.0/dist/themes/github.css"
+		/>
 		<link rel="stylesheet" href="./styles.css" />
+		<link rel="stylesheet" href="./demo-shell.css" />
 	</head>
-	<body>
+	<body data-syntax-theme="github">
+		<a class="skip-link" href="#main">Skip to examples</a>
 		<header>
-			<h1><code>form-obfuscator</code> via esm.sh</h1>
-			<p>
+			<p class="eyebrow">Web component / esm</p>
+			<h1>&lt;form-obfuscator&gt;</h1>
+			<p class="lede">
 				Import the class and register it manually. See the
 				<a
 					href="https://github.com/aarongustafson/form-obfuscator/blob/main/README.md"
@@ -17,8 +24,26 @@
 				>
 				for installation and API details.
 			</p>
+			<nav aria-label="Component resources">
+				<a
+					href="https://github.com/aarongustafson/form-obfuscator/blob/main/README.md"
+					>Read the README</a
+				>
+				<a href="https://github.com/aarongustafson/form-obfuscator"
+					>View on GitHub</a
+				>
+				<a href="./index.html">All examples</a>
+				<a href="./unpkg.html">unpkg example</a>
+			</nav>
 		</header>
-		<main>
+		<main id="main" tabindex="-1">
+			<p
+				id="microlighter-status"
+				class="enhancement-status"
+				role="status"
+				hidden
+			></p>
+
 			<p class="note">
 				Use fictional values only. Obfuscation is not encryption: values
 				remain available to scripts and form submission. If JavaScript
@@ -38,9 +63,16 @@
 					the field to edit its value, then Tab away to obfuscate it.
 				</p>
 				<div class="code-demo-pair">
-					<pre
-						tabindex="0"
-					><code><mark>import { FormObfuscatorElement } from
+					<micro-lighter
+						class="code-panel"
+						language="javascript"
+						controls="copy"
+						data-label="JavaScript"
+					>
+						<pre
+							aria-label="Manual registration code 1"
+							tabindex="0"
+						><code><mark>import { FormObfuscatorElement } from
   '@aarongustafson/form-obfuscator/form-obfuscator.js';</mark>
 <mark>customElements.define('form-obfuscator', FormObfuscatorElement);</mark>
 
@@ -49,6 +81,7 @@
   &lt;input id="account-number" name="account"
     value="1234-5678-9012" /&gt;
 <mark>&lt;/form-obfuscator&gt;</mark></code></pre>
+					</micro-lighter>
 					<div class="demo">
 						<form-obfuscator>
 							<label for="account-number">Account number</label>
@@ -84,5 +117,6 @@
 				customElements.define('form-obfuscator', FormObfuscatorElement);
 			}
 		</script>
+		<script type="module" src="./code-examples.js"></script>
 	</body>
 </html>
