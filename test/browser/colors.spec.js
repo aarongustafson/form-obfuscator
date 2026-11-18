@@ -586,7 +586,8 @@ test('forced-color author rules keep solid pairs when gradients are suppressed',
 	});
 	for (const [selector, color] of [
 		['h1', 'rgba(0, 0, 0, 0)'],
-		['pre', 'rgb(255, 255, 255)'],
+		['micro-lighter', 'rgb(255, 255, 255)'],
+		['micro-lighter pre', 'rgba(0, 0, 0, 0)'],
 		['input:not([type="hidden"])', 'rgb(255, 255, 255)'],
 		['button', 'rgb(192, 192, 192)'],
 		['output', 'rgb(192, 192, 192)'],
