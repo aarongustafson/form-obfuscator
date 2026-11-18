@@ -339,6 +339,10 @@ for (const name of pages) {
 				baseURL: 'http://127.0.0.1:4189',
 				javaScriptEnabled: failure !== 'no-js',
 			});
+			await context.route(
+				'https://cdn.jsdelivr.net/npm/microlighter@2.2.0/dist/**',
+				(route) => route.abort(),
+			);
 			const page = await context.newPage();
 			await demo(page, name, true);
 			const field = page.locator('input:not([type="hidden"])').first();
