@@ -2,15 +2,25 @@ import { readFile } from 'node:fs/promises';
 import { get } from 'node:http';
 import { test, expect } from '@playwright/test';
 
+test.beforeEach(async ({ page }) => {
+	await page.route(
+		'https://cdn.jsdelivr.net/npm/microlighter@2.2.0/dist/**',
+		(route) => route.abort(),
+	);
+});
+
 const read = (path) =>
 	readFile(new URL(`../../${path}`, import.meta.url), 'utf8');
 const source = await read('form-obfuscator.js');
 const definition = await read('define.js');
-const css = await read('demo/styles.css');
+const css = [
+	await read('demo/styles.css'),
+	await read('demo/demo-shell.css'),
+].join('\n');
 const pages = ['index', 'esm', 'unpkg'];
 const fieldMarkSurfaces =
 	'pre, pre code, mark, input:not([type="hidden"]), .note, .note code';
-const buttonSurfaces = 'code:not(pre code):not(.note code), button, output';
+const buttonSurfaces = 'h1, code:not(pre code):not(.note code), button, output';
 const tokens = [
 	'Canvas',
 	'CanvasText',
@@ -249,7 +259,7 @@ for (const name of pages) {
 				).toBe(true);
 		});
 
-		test(`${name} ${colorScheme}: ButtonText/ButtonFace text contrast`, async ({
+		test(`${name} ${colorScheme}: heading, inline code, and native control text contrast`, async ({
 			page,
 			browserName,
 		}) => {
@@ -260,15 +270,15 @@ for (const name of pages) {
 			test.fail(
 				process.platform === 'linux' &&
 					browserName === 'webkit' &&
-					colorScheme === 'dark',
+					colorScheme === 'dark' &&
+					values.some((value) =>
+						['BUTTON', 'OUTPUT'].includes(value.tag),
+					),
 				'Bundled Ubuntu WebKit native dark ButtonText/ButtonFace is 1.82:1.',
 			);
 			for (const value of values)
 				expect
-					.soft(
-						value.text,
-						`${value.tag} ButtonText/ButtonFace text contrast`,
-					)
+					.soft(value.text, `${value.tag} text contrast`)
 					.toBeGreaterThanOrEqual(4.5);
 		});
 	}
@@ -284,6 +294,9 @@ for (const name of pages) {
 				'<aside class="note"><p>Note <code>code</code> <a href="#sample">link</a></p><small>Note help</small></aside><aside class="api-reference"><p>API <code>code</code> <a href="#sample">link</a></p><small>API help</small></aside><button type="reset">Reset <small>Button help</small></button>',
 			);
 		});
+		await page
+			.locator('link[rel="stylesheet"]')
+			.evaluateAll((links) => links.forEach((link) => link.remove()));
 		const styles = await page.addStyleTag({ content: css });
 		for (const palette of palettes) {
 			await styles.evaluate(
@@ -326,6 +339,10 @@ for (const name of pages) {
 				baseURL: 'http://127.0.0.1:4189',
 				javaScriptEnabled: failure !== 'no-js',
 			});
+			await context.route(
+				'https://cdn.jsdelivr.net/npm/microlighter@2.2.0/dist/**',
+				(route) => route.abort(),
+			);
 			const page = await context.newPage();
 			await demo(page, name, true);
 			const field = page.locator('input:not([type="hidden"])').first();
@@ -559,14 +576,18 @@ test('forced-color author rules keep solid pairs when gradients are suppressed',
 		contrast: 'no-preference',
 	});
 	await demo(page);
+	await page
+		.locator('link[rel="stylesheet"]')
+		.evaluateAll((links) => links.forEach((link) => link.remove()));
 	await page.addStyleTag({ content: forced(css) });
 	await page.addStyleTag({
 		content:
 			'code, pre, input, button, output { background-image: none !important; }',
 	});
 	for (const [selector, color] of [
-		['header code', 'rgb(192, 192, 192)'],
-		['pre', 'rgb(255, 255, 255)'],
+		['h1', 'rgba(0, 0, 0, 0)'],
+		['micro-lighter', 'rgb(255, 255, 255)'],
+		['micro-lighter pre', 'rgba(0, 0, 0, 0)'],
 		['input:not([type="hidden"])', 'rgb(255, 255, 255)'],
 		['button', 'rgb(192, 192, 192)'],
 		['output', 'rgb(192, 192, 192)'],

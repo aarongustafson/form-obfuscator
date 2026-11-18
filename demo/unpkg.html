@@ -5,11 +5,14 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>form-obfuscator via unpkg</title>
 		<link rel="stylesheet" href="./styles.css" />
+		<link rel="stylesheet" href="./demo-shell.css" />
 	</head>
-	<body>
+	<body data-syntax-theme="github">
+		<a class="skip-link" href="#main">Skip to examples</a>
 		<header>
-			<h1><code>form-obfuscator</code> via unpkg</h1>
-			<p>
+			<p class="eyebrow">Web component / unpkg</p>
+			<h1>&lt;form-obfuscator&gt;</h1>
+			<p class="lede">
 				Load the guarded registration helper. See the
 				<a
 					href="https://github.com/aarongustafson/form-obfuscator/blob/main/README.md"
@@ -17,8 +20,26 @@
 				>
 				for installation and API details.
 			</p>
+			<nav aria-label="Component resources">
+				<a
+					href="https://github.com/aarongustafson/form-obfuscator/blob/main/README.md"
+					>Read the README</a
+				>
+				<a href="https://github.com/aarongustafson/form-obfuscator"
+					>View on GitHub</a
+				>
+				<a href="./index.html">All examples</a>
+				<a href="./esm.html">esm.sh example</a>
+			</nav>
 		</header>
-		<main>
+		<main id="main" tabindex="-1">
+			<p
+				id="microlighter-status"
+				class="enhancement-status"
+				role="status"
+				hidden
+			></p>
+
 			<p class="note">
 				Use fictional values only. Obfuscation is not encryption: values
 				remain available to scripts and form submission. If JavaScript
@@ -39,9 +60,16 @@
 					to obfuscate it.
 				</p>
 				<div class="code-demo-pair">
-					<pre
-						tabindex="0"
-					><code><mark>import { defineFormObfuscator } from
+					<micro-lighter
+						class="code-panel"
+						language="javascript"
+						controls="copy"
+						data-label="JavaScript"
+					>
+						<pre
+							aria-label="Guarded registration code 1"
+							tabindex="0"
+						><code><mark>import { defineFormObfuscator } from
   '@aarongustafson/form-obfuscator/define.js';</mark>
 <mark>defineFormObfuscator();</mark>
 
@@ -50,6 +78,7 @@
   &lt;input id="account-number" name="account"
     value="1234-5678-9012" /&gt;
 <mark>&lt;/form-obfuscator&gt;</mark></code></pre>
+					</micro-lighter>
 					<div class="demo">
 						<form-obfuscator>
 							<label for="account-number">Account number</label>
@@ -83,5 +112,6 @@
 
 			defineFormObfuscator();
 		</script>
+		<script type="module" src="./code-examples.js"></script>
 	</body>
 </html>
