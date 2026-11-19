@@ -11,7 +11,8 @@ it('retains surface pairs without accent focus, faded controls, or forced-color 
 	expect(css).not.toMatch(/:focus-visible|opacity:|forced-color-adjust/);
 	expect(css).toMatch(/code\s*\{[^}]*color:\s*ButtonText/s);
 	expect(css).toMatch(/\.demo\s*\{[^}]*color:\s*CanvasText/s);
-	expect(css).toMatch(/\.note\s*\{[^}]*color:\s*MarkText/s);
+	expect(css).toMatch(/\.note\s*\{[^}]*background:\s*Canvas;/s);
+	expect(css).toMatch(/\.note\s*\{[^}]*color:\s*CanvasText/s);
 	expect(css).toContain('prefers-contrast: more');
 });
 
