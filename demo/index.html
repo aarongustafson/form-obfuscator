@@ -4,10 +4,10 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>&lt;form-obfuscator&gt; Web Component Demo</title>
-		<link rel="stylesheet" href="./styles.css" />
 		<link rel="stylesheet" href="./demo-shell.css" />
+		<link rel="stylesheet" href="./styles.css" />
 	</head>
-	<body data-syntax-theme="github">
+	<body data-demo-page="full" data-syntax-theme="github">
 		<a class="skip-link" href="#main">Skip to examples</a>
 		<header>
 			<p class="eyebrow">Web component / Examples</p>
@@ -44,6 +44,9 @@
 			<p
 				id="microlighter-status"
 				class="enhancement-status"
+				data-loading-message="Loading optional code highlighting and Copy controls."
+				data-failure-message="MicroLighter could not load. Code remains readable and selectable; the component loads independently."
+				data-theme-failure-message="Code highlighting and Copy controls are available, but the syntax theme could not load. The component loads independently."
 				role="status"
 				hidden
 			></p>
@@ -91,7 +94,7 @@
 <mark>&lt;/form-obfuscator&gt;</mark></code></pre>
 							</micro-lighter>
 						</div>
-						<div class="demo">
+						<div class="demo" data-demo-label="Live example">
 							<form-obfuscator>
 								<label for="basic-example">Password</label>
 								<input type="text" id="basic-example" />
@@ -145,7 +148,7 @@
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
 							</micro-lighter>
 						</div>
-						<div class="demo">
+						<div class="demo" data-demo-label="Live example">
 							<form-obfuscator character="•">
 								<label for="bullet-example"
 									>Bullet Obfuscation</label
@@ -205,7 +208,7 @@
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
 							</micro-lighter>
 						</div>
-						<div class="demo">
+						<div class="demo" data-demo-label="Live example">
 							<form-obfuscator pattern="\d{4}$">
 								<label for="ssn-example"
 									>SSN (shows last 4 digits)</label
@@ -267,7 +270,7 @@
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
 							</micro-lighter>
 						</div>
-						<div class="demo">
+						<div class="demo" data-demo-label="Live example">
 							<form-obfuscator maxlength="4">
 								<label for="max-example"
 									>Long Value (max 4 chars shown)</label
@@ -329,7 +332,7 @@
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
 							</micro-lighter>
 						</div>
-						<div class="demo">
+						<div class="demo" data-demo-label="Live example">
 							<script>
 								window.customReplacer = (match) => {
 									return match
@@ -405,7 +408,7 @@
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
 							</micro-lighter>
 						</div>
-						<div class="demo">
+						<div class="demo" data-demo-label="Live example">
 							<script>
 								function cardNumberReplacer() {
 									var beginning = arguments[0][1];
@@ -470,7 +473,7 @@
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
 							</micro-lighter>
 						</div>
-						<div class="demo">
+						<div class="demo" data-demo-label="Live example">
 							<script>
 								function emailReplacer() {
 									var username = arguments[0][1];
@@ -526,7 +529,7 @@
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
 							</micro-lighter>
 						</div>
-						<div class="demo">
+						<div class="demo" data-demo-label="Live example">
 							<form-obfuscator
 								pattern="\d{4}$"
 								character="•"
@@ -615,7 +618,7 @@
 &lt;/form&gt;</code></pre>
 							</micro-lighter>
 						</div>
-						<div class="demo">
+						<div class="demo" data-demo-label="Live example">
 							<form id="real-world-form">
 								<form-obfuscator>
 									<label for="account-pwd">Password</label>
@@ -717,7 +720,7 @@
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
 							</micro-lighter>
 						</div>
-						<div class="demo">
+						<div class="demo" data-demo-label="Live example">
 							<form-obfuscator id="event-obfuscator">
 								<label for="event-example">Event Demo</label>
 								<input type="text" id="event-example" />

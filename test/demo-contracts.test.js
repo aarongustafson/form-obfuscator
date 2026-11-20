@@ -5,15 +5,22 @@ import { expect, it } from 'vitest';
 
 const read = (path) => readFile(resolve(path), 'utf8');
 
+it('trims block-edge margins inside demo sections', async () => {
+	expect(await read('demo/demo-shell.css')).toMatch(
+		/\.demo-section(?:,\s*\.api-reference)?\s*\{[^}]*\bmargin-trim:\s*block;/,
+	);
+});
+
 it('retains surface pairs without accent focus, faded controls, or forced-color prose overrides', async () => {
 	const css = await read('demo/styles.css');
 	expect(css).not.toMatch(/GrayText|ActiveText|Highlight|SelectedItem/);
 	expect(css).not.toMatch(/:focus-visible|opacity:|forced-color-adjust/);
-	expect(css).toMatch(/code\s*\{[^}]*color:\s*ButtonText/s);
-	expect(css).toMatch(/\.demo\s*\{[^}]*color:\s*CanvasText/s);
-	expect(css).toMatch(/\.note\s*\{[^}]*background:\s*Canvas;/s);
-	expect(css).toMatch(/\.note\s*\{[^}]*color:\s*CanvasText/s);
-	expect(css).toContain('prefers-contrast: more');
+	const shared = await read('demo/demo-shell.css');
+	expect(shared).toMatch(/code\s*\{[^}]*color:\s*ButtonText/s);
+	expect(shared).toMatch(/\.demo\s*\{[^}]*color:\s*CanvasText/s);
+	expect(shared).toMatch(/\.note\s*\{[^}]*background:\s*Canvas;/s);
+	expect(shared).toMatch(/\.note\s*\{[^}]*color:\s*CanvasText/s);
+	expect(shared).toContain('prefers-contrast: more');
 });
 
 it('provides paired examples, fallback guidance, and credits on every import page', async () => {
