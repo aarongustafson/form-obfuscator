@@ -16,7 +16,9 @@ it('retains surface pairs without accent focus, faded controls, or forced-color 
 	expect(css).not.toMatch(/GrayText|ActiveText|Highlight|SelectedItem/);
 	expect(css).not.toMatch(/:focus-visible|opacity:|forced-color-adjust/);
 	const shared = await read('demo/demo-shell.css');
-	expect(shared).toMatch(/code\s*\{[^}]*color:\s*ButtonText/s);
+	expect(shared).toMatch(
+		/code\s*\{[^}]*background-color:\s*Canvas;[^}]*color:\s*CanvasText/s,
+	);
 	expect(shared).toMatch(/\.demo\s*\{[^}]*color:\s*CanvasText/s);
 	expect(shared).toMatch(/\.note\s*\{[^}]*background:\s*Canvas;/s);
 	expect(shared).toMatch(/\.note\s*\{[^}]*color:\s*CanvasText/s);
