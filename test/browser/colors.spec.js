@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { get } from 'node:http';
 import { test, expect } from '@playwright/test';
+import { readDemoStyles } from './demo-fixture.js';
 
 test.beforeEach(async ({ page }) => {
 	await page.route(
@@ -13,10 +14,7 @@ const read = (path) =>
 	readFile(new URL(`../../${path}`, import.meta.url), 'utf8');
 const source = await read('form-obfuscator.js');
 const definition = await read('define.js');
-const css = [
-	await read('demo/styles.css'),
-	await read('demo/demo-shell.css'),
-].join('\n');
+const css = await readDemoStyles();
 const pages = ['index', 'esm', 'unpkg'];
 const fieldMarkSurfaces =
 	'pre, pre code, mark, input:not([type="hidden"]), .note, .note code';
@@ -322,10 +320,7 @@ for (const name of pages) {
 				expect(
 					(await measurements(button)).text,
 				).toBeGreaterThanOrEqual(4.5);
-				await expect(button).toHaveCSS(
-					'text-decoration-line',
-					'underline',
-				);
+				await expect(button).toHaveCSS('text-decoration-line', 'none');
 				await page.mouse.move(0, 0);
 			}
 		}
