@@ -55,7 +55,7 @@
 					value is not obfuscated.
 				</p>
 			</noscript>
-			<section class="demo-section">
+			<section class="demo-section" id="guarded-registration">
 				<h2>Guarded registration</h2>
 				<p>
 					The helper registers the element when Custom Elements are
@@ -65,16 +65,18 @@
 				<div class="code-demo-pair">
 					<micro-lighter
 						class="code-panel"
-						language="javascript"
+						language="html"
 						controls="copy"
-						data-label="JavaScript"
+						data-label="HTML"
 					>
 						<pre
 							aria-label="Guarded registration code 1"
 							tabindex="0"
-						><code><mark>import { defineFormObfuscator } from
-  '@aarongustafson/form-obfuscator/define.js';</mark>
+						><code><mark>&lt;script type="module"&gt;
+import { defineFormObfuscator } from 'https://unpkg.com/@aarongustafson/form-obfuscator@latest/define.js?module';
+</mark>
 <mark>defineFormObfuscator();</mark>
+<mark>&lt;/script&gt;</mark>
 
 <mark>&lt;form-obfuscator&gt;</mark>
   &lt;label for="account-number"&gt;Account number&lt;/label&gt;

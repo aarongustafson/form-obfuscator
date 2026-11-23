@@ -13,19 +13,13 @@
 			<p class="eyebrow">Web component / Examples</p>
 			<h1>&lt;form-obfuscator&gt;</h1>
 			<p class="lede">
-				A web component that obfuscates form field values when they
-				don't have focus, while keeping the actual values readable while
-				editing. See the
+				Mask input values on blur and reveal them on focus for editing.
+				See the
 				<a
 					href="https://github.com/aarongustafson/form-obfuscator/blob/main/README.md"
 					>README</a
 				>
 				for installation and API documentation.
-			</p>
-			<p>
-				<strong>How it works:</strong> Field values appear normal while
-				focused and become obfuscated when the field loses focus. The
-				actual value is stored in a hidden field for form submission.
 			</p>
 			<nav aria-label="Component resources">
 				<a
@@ -53,9 +47,10 @@
 
 			<p class="note">
 				Use fictional values only. Obfuscation is not encryption: values
-				remain available to scripts and form submission, and the event
-				example displays revealed values. If JavaScript or the module
-				fails, fields remain readable and editable without obfuscation.
+				remain available to scripts and form submission. The event
+				example logs state changes, not values. If JavaScript or the
+				module fails, fields remain readable and editable without
+				obfuscation.
 			</p>
 			<noscript>
 				<p>
@@ -63,12 +58,14 @@
 					not obfuscated.
 				</p>
 			</noscript>
-			<section>
+			<section id="basic-obfuscation">
 				<h2>Basic Obfuscation</h2>
 				<p>
 					The simplest usage: wrap a form field with
 					<code>form-obfuscator</code> to obfuscate its value when not
-					focused.
+					focused. Focus the field to edit the fictional reference,
+					then Tab away to mask it. Without JavaScript, the native
+					field stays readable and editable.
 				</p>
 
 				<div class="demo-section">
@@ -85,34 +82,44 @@
 									tabindex="0"
 								><code><mark>&lt;form-obfuscator&gt;</mark>
   &lt;label for="basic-example"&gt;
-    Password
+    Account reference
   &lt;/label&gt;
   &lt;input
     type="text"
     id="basic-example"
+    name="reference"
+    value="DEMO-1234"
   /&gt;
 <mark>&lt;/form-obfuscator&gt;</mark></code></pre>
 							</micro-lighter>
 						</div>
 						<div class="demo" data-demo-label="Live example">
 							<form-obfuscator>
-								<label for="basic-example">Password</label>
-								<input type="text" id="basic-example" />
+								<label for="basic-example"
+									>Account reference</label
+								>
+								<input
+									type="text"
+									id="basic-example"
+									name="reference"
+									value="DEMO-1234"
+								/>
 							</form-obfuscator>
 							<small>
-								Try typing in the field, then clicking outside
-								of it.
+								Focus reveals the reference. Tab away to mask
+								it.
 							</small>
 						</div>
 					</div>
 				</div>
 			</section>
 
-			<section>
+			<section id="custom-characters">
 				<h2>Custom Characters</h2>
 				<p>
 					Use the <code>character</code> attribute to specify which
-					characters to use for obfuscation. Default is "*".
+					character to use for obfuscation. The default is
+					<code>*</code>.
 				</p>
 
 				<div class="demo-section">
@@ -165,12 +172,13 @@
 				</div>
 			</section>
 
-			<section>
+			<section id="pattern-obfuscation">
 				<h2>Pattern-Based Obfuscation</h2>
 				<p>
-					Use the <code>pattern</code> attribute to selectively
-					obfuscate specific characters. Useful for formats like phone
-					numbers, SSNs, or credit cards.
+					Set <code>pattern="\d{4}$"</code> to keep the last four
+					digits visible and mask the rest. If the value doesn’t
+					match, the component masks the whole value. Use fictional
+					numbers here.
 				</p>
 
 				<div class="demo-section">
@@ -239,7 +247,7 @@
 				</div>
 			</section>
 
-			<section>
+			<section id="maximum-display-length">
 				<h2>Maximum Length</h2>
 				<p>
 					Use the <code>maxlength</code> attribute to limit how many
@@ -265,7 +273,7 @@
   &lt;input
     type="text"
     id="max-example"
-    value="ThisIsAVeryLongPassword123"
+    value="DEMO-REFERENCE-123456789"
   /&gt;
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
 							</micro-lighter>
@@ -278,7 +286,7 @@
 								<input
 									type="text"
 									id="max-example"
-									value="ThisIsAVeryLongPassword123"
+									value="DEMO-REFERENCE-123456789"
 								/>
 							</form-obfuscator>
 							<small>
@@ -290,12 +298,19 @@
 				</div>
 			</section>
 
-			<section>
+			<section id="custom-replacer">
 				<h2>Custom Replacer Function</h2>
 				<p>
-					Use the <code>replacer</code> attribute to reference a
-					custom JavaScript function for complete control over
-					obfuscation.
+					Set <code>replacer</code> to trusted JavaScript function
+					body text, not a function reference. It requires
+					<code>pattern</code>. This body calls an authored global
+					helper with <code>arguments[0]</code>, the matched text, to
+					mask every other character. A restrictive Content Security
+					Policy can block compilation; see the
+					<a
+						href="https://github.com/aarongustafson/form-obfuscator/blob/main/README.md#privacy-and-trusted-configuration"
+						>configuration caveats</a
+					>.
 				</p>
 
 				<div class="demo-section">
@@ -365,27 +380,32 @@
 				</div>
 			</section>
 
-			<section>
+			<section id="advanced-combinations">
 				<h2>Advanced Combinations</h2>
 				<p>
-					Combine pattern with custom replacer functions for
-					sophisticated obfuscation behaviors.
+					Combine a pattern with a trusted replacer body or a display
+					limit to keep useful parts of a fictional value visible.
 				</p>
 
 				<div class="demo-section">
-					<h3>Credit Card with Custom Replacer</h3>
-					<div class="code-demo-pair">
-						<div class="code">
-							<micro-lighter
-								class="code-panel"
-								language="html"
-								controls="copy"
-								data-label="HTML"
-							>
-								<pre
-									aria-label="Credit Card with Custom Replacer code 6"
-									tabindex="0"
-								><code>&lt;script&gt;
+					<section id="card-replacer">
+						<h3>Credit Card with Custom Replacer</h3>
+						<p>
+							Mask the digits before the last group while keeping
+							hyphens in place.
+						</p>
+						<div class="code-demo-pair">
+							<div class="code">
+								<micro-lighter
+									class="code-panel"
+									language="html"
+									controls="copy"
+									data-label="HTML"
+								>
+									<pre
+										aria-label="Credit Card with Custom Replacer code 6"
+										tabindex="0"
+									><code>&lt;script&gt;
   function cardNumberReplacer() {
     var beginning = arguments[0][1];
     var final_digits = arguments[0][2];
@@ -403,54 +423,61 @@
   &lt;input
     type="text"
     id="cc-replacer"
+    name="cc-replacer"
     value="1234-5678-9012-3456"
   /&gt;
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
-							</micro-lighter>
+								</micro-lighter>
+							</div>
+							<div class="demo" data-demo-label="Live example">
+								<script>
+									function cardNumberReplacer() {
+										var beginning = arguments[0][1];
+										var final_digits = arguments[0][2];
+										return (
+											beginning.replace(/\d/g, '*') +
+											final_digits
+										);
+									}
+								</script>
+								<form-obfuscator
+									pattern="^((?:[\d]+\-)+)(\d+)$"
+									replacer="return cardNumberReplacer(arguments)"
+								>
+									<label for="cc-replacer">Credit Card</label>
+									<input
+										type="text"
+										id="cc-replacer"
+										name="cc-replacer"
+										value="1234-5678-9012-3456"
+									/>
+								</form-obfuscator>
+								<small>
+									Pattern captures groups of digits separated
+									by hyphens, keeping only the last group
+									visible.
+								</small>
+							</div>
 						</div>
-						<div class="demo" data-demo-label="Live example">
-							<script>
-								function cardNumberReplacer() {
-									var beginning = arguments[0][1];
-									var final_digits = arguments[0][2];
-									return (
-										beginning.replace(/\d/g, '*') +
-										final_digits
-									);
-								}
-							</script>
-							<form-obfuscator
-								pattern="^((?:[\d]+\-)+)(\d+)$"
-								replacer="return cardNumberReplacer(arguments)"
-							>
-								<label for="cc-replacer">Credit Card</label>
-								<input
-									type="text"
-									id="cc-replacer"
-									name="cc-replacer"
-									value="1234-5678-9012-3456"
-								/>
-							</form-obfuscator>
-							<small>
-								Pattern captures groups of digits separated by
-								hyphens, keeping only the last group visible.
-							</small>
-						</div>
-					</div>
-
-					<h3>Email with Custom Replacer</h3>
-					<div class="code-demo-pair">
-						<div class="code">
-							<micro-lighter
-								class="code-panel"
-								language="html"
-								controls="copy"
-								data-label="HTML"
-							>
-								<pre
-									aria-label="Email with Custom Replacer code 7"
-									tabindex="0"
-								><code>&lt;script&gt;
+					</section>
+					<section id="email-domain-replacer">
+						<h3>Email with Custom Replacer</h3>
+						<p>
+							Mask the username while leaving the
+							<code>@</code> and domain visible.
+						</p>
+						<div class="code-demo-pair">
+							<div class="code">
+								<micro-lighter
+									class="code-panel"
+									language="html"
+									controls="copy"
+									data-label="HTML"
+								>
+									<pre
+										aria-label="Email with Custom Replacer code 7"
+										tabindex="0"
+									><code>&lt;script&gt;
   function emailReplacer() {
     var username = arguments[0][1];
     var domain = arguments[0][2];
@@ -468,53 +495,62 @@
   &lt;input
     type="text"
     id="email-replacer"
+    name="email-replacer"
     value="user@example.com"
   /&gt;
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
-							</micro-lighter>
-						</div>
-						<div class="demo" data-demo-label="Live example">
-							<script>
-								function emailReplacer() {
-									var username = arguments[0][1];
-									var domain = arguments[0][2];
-									return username.replace(/./g, '*') + domain;
-								}
-							</script>
-							<form-obfuscator
-								pattern="^(.*?)(@.+)$"
-								replacer="return emailReplacer(arguments)"
-							>
-								<label for="email-replacer"
-									>Email Address</label
+								</micro-lighter>
+							</div>
+							<div class="demo" data-demo-label="Live example">
+								<script>
+									function emailReplacer() {
+										var username = arguments[0][1];
+										var domain = arguments[0][2];
+										return (
+											username.replace(/./g, '*') + domain
+										);
+									}
+								</script>
+								<form-obfuscator
+									pattern="^(.*?)(@.+)$"
+									replacer="return emailReplacer(arguments)"
 								>
-								<input
-									type="text"
-									id="email-replacer"
-									name="email-replacer"
-									value="user@example.com"
-								/>
-							</form-obfuscator>
-							<small>
-								Pattern separates username from domain,
-								obfuscating only the username portion.
-							</small>
+									<label for="email-replacer"
+										>Email Address</label
+									>
+									<input
+										type="text"
+										id="email-replacer"
+										name="email-replacer"
+										value="user@example.com"
+									/>
+								</form-obfuscator>
+								<small>
+									Pattern separates username from domain,
+									obfuscating only the username portion.
+								</small>
+							</div>
 						</div>
-					</div>
-
-					<h3>Pattern + Character + Maxlength</h3>
-					<div class="code-demo-pair">
-						<div class="code">
-							<micro-lighter
-								class="code-panel"
-								language="html"
-								controls="copy"
-								data-label="HTML"
-							>
-								<pre
-									aria-label="Pattern + Character + Maxlength code 8"
-									tabindex="0"
-								><code><mark>&lt;form-obfuscator
+					</section>
+					<section id="limited-pattern-display">
+						<h3>Pattern + Character + Maxlength</h3>
+						<p>
+							Keep the last four digits, with bullet masking
+							filling the rest of a 16-character display. The
+							input value is not shortened.
+						</p>
+						<div class="code-demo-pair">
+							<div class="code">
+								<micro-lighter
+									class="code-panel"
+									language="html"
+									controls="copy"
+									data-label="HTML"
+								>
+									<pre
+										aria-label="Pattern + Character + Maxlength code 8"
+										tabindex="0"
+									><code><mark>&lt;form-obfuscator
   pattern="\d{4}$"
   character="•"
   maxlength="16"&gt;</mark>
@@ -524,41 +560,45 @@
   &lt;input
     type="text"
     id="combo-example"
+    name="combo-example"
     placeholder="1234-5678-9012-3456"
   /&gt;
 <mark>&lt;/form-obfuscator&gt; </mark></code></pre>
-							</micro-lighter>
-						</div>
-						<div class="demo" data-demo-label="Live example">
-							<form-obfuscator
-								pattern="\d{4}$"
-								character="•"
-								maxlength="16"
-							>
-								<label for="combo-example"
-									>Credit Card (limited display)</label
+								</micro-lighter>
+							</div>
+							<div class="demo" data-demo-label="Live example">
+								<form-obfuscator
+									pattern="\d{4}$"
+									character="•"
+									maxlength="16"
 								>
-								<input
-									type="text"
-									id="combo-example"
-									name="combo-example"
-									placeholder="1234-5678-9012-3456"
-								/>
-							</form-obfuscator>
-							<small>
-								Combines pattern (last 4 digits), custom
-								character (•), and max length (16 chars) for
-								controlled display.
-							</small>
+									<label for="combo-example"
+										>Credit Card (limited display)</label
+									>
+									<input
+										type="text"
+										id="combo-example"
+										name="combo-example"
+										placeholder="1234-5678-9012-3456"
+									/>
+								</form-obfuscator>
+								<small>
+									Combines pattern (last 4 digits), custom
+									character (•), and max length (16 chars) for
+									controlled display.
+								</small>
+							</div>
 						</div>
-					</div>
+					</section>
 				</div>
 			</section>
-			<section>
+			<section id="real-world-example">
 				<h2>Real-World Example</h2>
 				<p>
 					A complete form demonstrating multiple obfuscated fields
-					working together.
+					working together, using fictional account details. Each
+					input’s name moves to a hidden input for submission. Without
+					JavaScript, the visible inputs keep their names and values.
 				</p>
 
 				<div class="demo-section">
@@ -576,12 +616,13 @@
 								><code>&lt;form&gt;
   <mark>&lt;form-obfuscator&gt;</mark>
     &lt;label for="account-pwd"&gt;
-      Password
+      Account reference
     &lt;/label&gt;
     &lt;input
       type="text"
       id="account-pwd"
-      name="password"
+      name="reference"
+      value="DEMO-1234"
     /&gt;
   <mark>&lt;/form-obfuscator&gt; </mark>
 
@@ -594,7 +635,7 @@
       type="text"
       id="account-ssn"
       name="ssn"
-      placeholder="123-45-6789"
+      value="123-45-6789"
     /&gt;
   <mark>&lt;/form-obfuscator&gt; </mark>
 
@@ -608,7 +649,7 @@
       type="text"
       id="account-cc"
       name="credit_card"
-      placeholder="1234-5678-9012-3456"
+      value="1234-5678-9012-3456"
     /&gt;
   <mark>&lt;/form-obfuscator&gt; </mark>
 
@@ -621,12 +662,14 @@
 						<div class="demo" data-demo-label="Live example">
 							<form id="real-world-form">
 								<form-obfuscator>
-									<label for="account-pwd">Password</label>
+									<label for="account-pwd"
+										>Account reference</label
+									>
 									<input
 										type="text"
 										id="account-pwd"
-										name="password"
-										value="MySecretPassword123"
+										name="reference"
+										value="DEMO-1234"
 									/>
 								</form-obfuscator>
 
@@ -657,22 +700,23 @@
 								<button type="submit">Submit</button>
 							</form>
 							<small>
-								All sensitive fields are obfuscated when not in
-								focus. Try clicking into a field to see the real
-								value.
+								Focus reveals each value; Tab away to mask it.
+								Submit uses native form navigation.
 							</small>
 						</div>
 					</div>
 				</div>
 			</section>
 
-			<section>
+			<section id="event-handling">
 				<h2>Event Handling</h2>
 				<p>
 					The component dispatches
 					<code>form-obfuscator:hide</code> and
 					<code>form-obfuscator:reveal</code> events when values are
-					hidden or shown.
+					hidden or shown. This example listens only to its own
+					instance and logs state changes without logging field
+					values.
 				</p>
 				<div class="demo-section">
 					<div class="code-demo-pair">
@@ -686,38 +730,29 @@
 								<pre
 									aria-label="Example code 10"
 									tabindex="0"
-								><code>&lt;script&gt;
+								><code><mark>&lt;form-obfuscator id="event-obfuscator"&gt;</mark>
+  &lt;label for="event-example"&gt;Event Demo&lt;/label&gt;
+  &lt;input type="text" id="event-example" /&gt;
+<mark>&lt;/form-obfuscator&gt;</mark>
+
+&lt;script&gt;
   const obfuscator = 
-    document.querySelector(
-      'form-obfuscator'
-    );
+    <mark>document.getElementById('event-obfuscator');</mark>
   
   obfuscator.addEventListener(
     <mark>'form-obfuscator:hide'</mark>,
     (e) =&gt; {
-      console.log('Obfuscated:', 
-        <mark>e.detail.field.value</mark>);
+      console.log('Obfuscated field:', <mark>e.detail.field.id</mark>);
     }
   );
   
   obfuscator.addEventListener(
     <mark>'form-obfuscator:reveal'</mark>,
     (e) =&gt; {
-      console.log('Revealed:', 
-        <mark>e.detail.field.value</mark>);
+      console.log('Revealed field:', <mark>e.detail.field.id</mark>);
     }
   );
-&lt;/script&gt;
-
-<mark>&lt;form-obfuscator&gt;</mark>
-  &lt;label for="event-example"&gt;
-    Event Demo
-  &lt;/label&gt;
-  &lt;input
-    type="text"
-    id="event-example"
-  /&gt;
-<mark>&lt;/form-obfuscator&gt; </mark></code></pre>
+&lt;/script&gt;</code></pre>
 							</micro-lighter>
 						</div>
 						<div class="demo" data-demo-label="Live example">
@@ -741,7 +776,7 @@
 									'form-obfuscator:hide',
 									(e) => {
 										logs.push(
-											`[${new Date().toLocaleTimeString()}] Obfuscated: "${e.detail.field.value}"`,
+											`[${new Date().toLocaleTimeString()}] Obfuscated field: ${e.detail.field.id}`,
 										);
 										eventLog.textContent = logs.join('\n');
 									},
@@ -751,7 +786,7 @@
 									'form-obfuscator:reveal',
 									(e) => {
 										logs.push(
-											`[${new Date().toLocaleTimeString()}] Revealed: "${e.detail.field.value}"`,
+											`[${new Date().toLocaleTimeString()}] Revealed field: ${e.detail.field.id}`,
 										);
 										eventLog.textContent = logs.join('\n');
 									},
@@ -772,8 +807,8 @@
 				<ul>
 					<li>
 						<a
-							href="https://github.com/aarongustafson/form-obfuscator/blob/main/README.md#attributes"
-							>Attributes</a
+							href="https://github.com/aarongustafson/form-obfuscator/blob/main/README.md#api"
+							>Attributes and properties</a
 						>
 					</li>
 					<li>
@@ -784,8 +819,8 @@
 					</li>
 					<li>
 						<a
-							href="https://github.com/aarongustafson/form-obfuscator/blob/main/README.md#how-it-works"
-							>How It Works</a
+							href="https://github.com/aarongustafson/form-obfuscator/blob/main/README.md#behavior"
+							>Behavior and submission</a
 						>
 					</li>
 				</ul>

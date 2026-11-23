@@ -5,6 +5,82 @@ import { expect, it } from 'vitest';
 
 const read = (path) => readFile(resolve(path), 'utf8');
 
+const parse = (html) => {
+	const template = document.createElement('template');
+	template.innerHTML = html;
+	return template.content;
+};
+
+it('gives each code/live walkthrough its own unique heading destination', async () => {
+	for (const name of ['index', 'esm', 'unpkg']) {
+		const doc = parse(await read(`demo/${name}.html`));
+		const ids = [...doc.querySelectorAll('[id]')].map((node) => node.id);
+		expect(new Set(ids).size).toBe(ids.length);
+		for (const pair of doc.querySelectorAll('.code-demo-pair')) {
+			let block = pair.parentElement;
+			while (block && !block.querySelector(':scope > h2, :scope > h3')) {
+				block = block.parentElement;
+			}
+			expect(block).not.toBeNull();
+			expect(block.id).toMatch(/^[a-z][a-z0-9-]+$/);
+			expect(block.querySelectorAll('.code-demo-pair')).toHaveLength(1);
+			expect(block.querySelector(':scope > p')).not.toBeNull();
+		}
+	}
+});
+
+it('links demo API references to real README headings', async () => {
+	const readme = await read('README.md');
+	const anchors = [...readme.matchAll(/^#{1,6} (.+)$/gm)].map((match) =>
+		match[1]
+			.toLowerCase()
+			.replace(/[^\w -]/g, '')
+			.replaceAll(' ', '-'),
+	);
+	for (const name of ['index', 'esm', 'unpkg']) {
+		const doc = parse(await read(`demo/${name}.html`));
+		for (const link of doc.querySelectorAll('a[href*="README.md#"]')) {
+			expect(anchors).toContain(link.getAttribute('href').split('#')[1]);
+		}
+	}
+});
+
+it('shows the actual CDN module registration in runnable script wrappers', async () => {
+	for (const name of ['esm', 'unpkg']) {
+		const doc = parse(await read(`demo/${name}.html`));
+		const executed = [
+			...doc.querySelectorAll('script[type="module"]:not([src])'),
+		]
+			.map((script) => script.textContent.trim())
+			.join('\n');
+		const shown = doc.querySelector('pre code').textContent;
+		const displayedScript = shown.match(
+			/<script type="module">([\s\S]*?)<\/script>/,
+		);
+		expect(displayedScript).not.toBeNull();
+		const normalize = (code) => code.replace(/\s+/g, ' ').trim();
+		expect(normalize(displayedScript[1])).toBe(normalize(executed));
+	}
+});
+
+it('keeps the basic fictional reference and scoped event example reproducible', async () => {
+	const doc = parse(await read('demo/index.html'));
+	const basic = doc.getElementById('basic-obfuscation');
+	expect(basic).not.toBeNull();
+	const input = basic.querySelector('.demo input');
+	expect(input.name).toBe('reference');
+	expect(input.value).toBe('DEMO-1234');
+	const events = doc.getElementById('event-handling');
+	expect(events).not.toBeNull();
+	const shown = events.querySelector('pre code').textContent;
+	expect(shown).toContain('<form-obfuscator id="event-obfuscator">');
+	expect(shown).toContain("document.getElementById('event-obfuscator')");
+	// The displayed example must attach listeners after its instance exists.
+	expect(shown.indexOf('<form-obfuscator')).toBeLessThan(
+		shown.indexOf('<script>'),
+	);
+});
+
 it('trims block-edge margins inside demo sections', async () => {
 	expect(await read('demo/demo-shell.css')).toMatch(
 		/\.demo-section(?:,\s*\.api-reference)?\s*\{[^}]*\bmargin-trim:\s*block;/,

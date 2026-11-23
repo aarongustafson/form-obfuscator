@@ -356,7 +356,7 @@ for (const name of pages) {
 							Object.fromEntries(new FormData(form)),
 						),
 				).toEqual({
-					password: 'MySecretPassword123',
+					reference: 'DEMO-1234',
 					ssn: '123-45-6789',
 					credit_card: '1234-5678-9012-3456',
 				});
@@ -426,15 +426,21 @@ for (const colorScheme of ['light', 'dark']) {
 	});
 }
 
-test('keyboard reveals and hides values without changing submission or authored names', async ({
+test('keyboard reveals and hides values with hidden submission and stable labels', async ({
 	page,
 }) => {
 	await demo(page);
 	const field = page
-		.getByRole('textbox', { name: 'Password', exact: true })
+		.getByRole('textbox', { name: 'Account reference', exact: true })
 		.last();
+	await expect(field).toHaveValue('*********');
+	await expect(field).not.toHaveAttribute('name');
+	const hidden = page.locator(
+		'#real-world-form input[type="hidden"][name="reference"]',
+	);
+	await expect(hidden).toHaveValue('DEMO-1234');
 	await field.focus();
-	await expect(field).toHaveValue('MySecretPassword123');
+	await expect(field).toHaveValue('DEMO-1234');
 	await field.fill('Edited sample');
 	await page.keyboard.press('Tab');
 	await expect(field).toHaveValue('*************');
@@ -443,7 +449,7 @@ test('keyboard reveals and hides values without changing submission or authored 
 			.locator('#real-world-form')
 			.evaluate((form) => Object.fromEntries(new FormData(form))),
 	).toEqual({
-		password: 'Edited sample',
+		reference: 'Edited sample',
 		ssn: '123-45-6789',
 		credit_card: '1234-5678-9012-3456',
 	});
@@ -463,7 +469,7 @@ test('keyboard reveals and hides values without changing submission or authored 
 	await expect(page.locator('#real-world-form')).toHaveAttribute(
 		'data-submitted',
 		JSON.stringify({
-			password: 'Edited sample',
+			reference: 'Edited sample',
 			ssn: '123-45-6789',
 			credit_card: '1234-5678-9012-3456',
 		}),
@@ -474,6 +480,12 @@ test('keyboard reveals and hides values without changing submission or authored 
 	await page.keyboard.press('Tab');
 	await eventField.focus();
 	await expect(page.locator('#event-log')).toContainText(
+		'Obfuscated field: event-example',
+	);
+	await expect(page.locator('#event-log')).toContainText(
+		'Revealed field: event-example',
+	);
+	await expect(page.locator('#event-log')).not.toContainText(
 		'<b>Fictional sample</b>',
 	);
 	await expect(page.locator('#event-log b')).toHaveCount(0);
