@@ -55,7 +55,7 @@
 					value is not obfuscated.
 				</p>
 			</noscript>
-			<section class="demo-section">
+			<section class="demo-section" id="manual-registration">
 				<h2>Manual registration</h2>
 				<p>
 					The class-only import does not register the element. Focus
@@ -64,16 +64,20 @@
 				<div class="code-demo-pair">
 					<micro-lighter
 						class="code-panel"
-						language="javascript"
+						language="html"
 						controls="copy"
-						data-label="JavaScript"
+						data-label="HTML"
 					>
 						<pre
 							aria-label="Manual registration code 1"
 							tabindex="0"
-						><code><mark>import { FormObfuscatorElement } from
-  '@aarongustafson/form-obfuscator/form-obfuscator.js';</mark>
-<mark>customElements.define('form-obfuscator', FormObfuscatorElement);</mark>
+						><code><mark>&lt;script type="module"&gt;
+import { FormObfuscatorElement } from 'https://esm.sh/@aarongustafson/form-obfuscator@3.1.6/form-obfuscator.js?bundle&amp;target=es2022';
+
+if (!customElements.get('form-obfuscator')) {
+  customElements.define('form-obfuscator', FormObfuscatorElement);
+}
+&lt;/script&gt;</mark>
 
 <mark>&lt;form-obfuscator&gt;</mark>
   &lt;label for="account-number"&gt;Account number&lt;/label&gt;
